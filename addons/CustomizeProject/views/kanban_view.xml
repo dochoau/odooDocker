@@ -1,0 +1,30 @@
+<odoo>
+    <record id="view_task_kanban_inherit" model="ir.ui.view">
+        <field name="name">project.task.kanban.view.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban"/>
+        <field name="arch" type="xml">
+            <!-- Quitar elementos innecesarios -->
+            <xpath expr="//field[@name='priority']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath> 
+             <xpath expr="//field[@name='activity_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//t[@t-name='menu']" position="replace">
+                <t t-name="menu" t-if="False"/>
+            </xpath>
+            <xpath expr="//div[contains(@class, 'ms-auto')]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>      
+            <!-- Se agrega el botón con las funcionalidades -->
+            <xpath expr="//t[@t-name='card']/main" position="inside">
+                <button name="open_related_document"
+                            type="object"
+                            string="Ir"
+                            class="oe_button"
+                            icon="fa-play"/>          
+            </xpath>
+        </field>
+    </record>
+</odoo>

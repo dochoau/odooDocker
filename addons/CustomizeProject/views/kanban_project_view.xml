@@ -1,0 +1,32 @@
+<odoo>
+    <record id="view_project_kanban_inherit_last_stage" model="ir.ui.view">
+        <field name="name">project.project.kanban.view.last_stage</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban"/>
+        <field name="arch" type="xml">
+            <!-- Insertar justo después del display_name -->
+            <xpath expr="//t[@t-name='card']//span[@name='partner_name']" position="after">
+                <span class="text-muted fw-bold">
+                    <field name="last_stage"/>
+                </span>
+            </xpath>
+             <xpath expr="//field[@name='activity_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='last_update_status']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_project_filter_inherit_last_stage" model="ir.ui.view">
+        <field name="name">project.project.search.last_stage</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_project_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_projects']" position="after">
+                <filter string="Agrupar por Étapas" name="last_stage_group" context="{'group_by': 'last_stage'}"/>
+                <field name="last_stage" string="Filtrar por Étapas"/>    
+            </xpath>
+        </field>
+    </record>
+</odoo>

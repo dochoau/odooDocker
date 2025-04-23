@@ -1,0 +1,17 @@
+<odoo>
+    <record id="view_product_image_catalog_form" model="ir.ui.view">
+        <field name="name">product.image.catalog.form</field>
+        <field name="model">product.image.catalog</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="image" widget="image"/>
+                        <field name="product_tmpl_id" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

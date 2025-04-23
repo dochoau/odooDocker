@@ -1,0 +1,46 @@
+<odoo>
+    <data>
+        <!-- Heredamos la vista del formulario de producción -->
+        <record id="view_mrp_production_form_inherit_employee" model="ir.ui.view">
+            <field name="name">mrp.production.form.inherit.employee</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view" />
+            <field name="arch" type="xml">
+                <!-- Insertamos el nuevo campo después del campo user_id (responsable) -->
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="employee_id" domain="[('department_id.name', '=', 'Producción')]"/>
+                </xpath>
+                <!-- Ocultar Componentes -->
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='bom_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_finished']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='components_availability']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>    
+                <xpath expr="//field[@name='qty_producing']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>    
+                <xpath expr="//notebook/page[1]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//notebook//page[2]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[1]" position="before">
+                    <page string="Descripción Detallada" active = "1">
+                        <div class="oe_structure">
+                            <field name="description" nolabel="1" style="font-size: 20px;" />
+                        </div>
+                    </page>
+                </xpath>    
+                                                  
+            </field>
+        </record>
+    </data>
+</odoo>

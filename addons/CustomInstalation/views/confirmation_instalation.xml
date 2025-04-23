@@ -1,0 +1,22 @@
+<odoo>
+    <record id="view_installation_confirm_form" model="ir.ui.view">
+        <field name="name">installation.confirmation.form</field>
+        <field name="model">installation.confirmation</field>
+        <field name="arch" type="xml">
+            <form string="Confirmación">
+                <group>
+                    <div>
+                        <span class="o_form_label">¿Está seguro que desea realizar esta acción?</span>
+                    </div>
+                    <div>
+                        <strong>Nota: solo se instalarán los equipos terminados.</strong>
+                    </div>
+                </group>
+                <footer>
+                    <button name="action_confirm" type="object" string="Sí" class="btn-primary"/>
+                    <button string="Cancelar" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
