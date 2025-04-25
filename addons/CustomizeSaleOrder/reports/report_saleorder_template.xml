@@ -1,132 +1,129 @@
 <odoo>
   <template id="report_saleorder_custom_html">
-    <t t-call="web.html_container">
+    <t t-call= "web.html_container"> 
       <t t-foreach="docs" t-as="o">
-
-        <!-- Contenedor general con borde (marco) -->
-        <div style="border: 1px solid #ccc; box-shadow: 0 4px 8px rgba(0,0,0,0.1); padding: 25px; font-family: 'Segoe UI', sans-serif; background-color: #fff; margin-top: 60px;">
-
-          <!-- Encabezado personalizado -->
-          <div style="margin-bottom: 20px; margin-top: 20px;">
-            <div style="display: flex; justify-content: space-between;">
-              <div>
-                <strong style="font-size: 16px;">UNIVERSO GASTRONOMICO S.A.S</strong><br/>
-                <strong>NIT:</strong> 901344210-5<br/>
-                <strong>COTIZACIÓN</strong><br/>
-                <strong>FECHA:</strong> <span t-esc="o.date_order.strftime('%d DE %B DE %Y')"></span><br/>
-                <strong>SEÑORES:</strong> <span t-esc="o.partner_id.name"></span><br/>
-                <strong>PROYECTO:</strong> <span t-esc="o.project_id.name or ''"></span><br/>
+        <t t-call= "web.external_layout">
+          <!-- Contenedor general con borde (marco) -->
+            <!-- Encabezado personalizado -->
+            <div style="margin-bottom: 20px; margin-top: 20px;">
+              <div style="display: flex; justify-content: space-between;">
+                <div>
+                  <!-- <strong style="font-size: 16px;">UNIVERSO GASTRONOMICO S.A.S</strong><br/> -->
+                  <strong>NIT:</strong> 901344210-5<br/>
+                  <strong>COTIZACIÓN</strong><br/>
+                  <strong>FECHA:</strong> <span t-esc="o.date_order.strftime('%d DE %B DE %Y')"></span><br/>
+                  <strong>SEÑORES:</strong> <span t-esc="o.partner_id.name"></span><br/>
+                  <strong>PROYECTO:</strong> <span t-esc="o.project_id.name or ''"></span><br/>
+                </div>
+                <!-- <div>
+                  <img t-att-src="'/logo.png'" style="width: 200px;"/>
+                </div> -->
               </div>
-              <div>
-                <img t-att-src="'/logo.png'" style="width: 200px;"/>
-              </div>
+              <p style="font-size: 16px; margin-top: 10px;">
+                A continuación, se referencian los equipos requeridos con sus especificaciones. Las imágenes anexadas no siempre corresponden al producto debido a que nuestros equipos se fabrican sobre medida o según la necesidad de cada cliente y negocio.
+              </p>
             </div>
-            <p style="font-size: 16px; margin-top: 10px;">
-              A continuación, se referencian los equipos requeridos con sus especificaciones. Las imágenes anexadas no siempre corresponden al producto debido a que nuestros equipos se fabrican sobre medida o según la necesidad de cada cliente y negocio.
-            </p>
-          </div>
 
-          <!-- Fichas de productos -->
-          <t t-foreach="o.order_line" t-as="line">
-            <table style="width: 100%; border: 1px solid #000; border-collapse: collapse; margin-bottom: 20px;">
-              <tr style="background-color: #d3d3d3; text-align: center; font-weight: bold;">
-                <td style="width: 33%; border: 1px solid #000; padding: 5px;"><t t-esc="line.name.upper()"/></td>
-                <td style="width: 34%; border: 1px solid #000; padding: 5px;">ESPECIFICACIÓN</td>
-                <td style="width: 33%; border: 1px solid #000; padding: 5px;">PRECIO (SIN IVA)</td>
-              </tr>
-              <tr>
-                <!-- Imagen -->
-                <td style="text-align: center; border: 1px solid #000; padding: 10px;">
-                  <t t-if="line.product_image_field">
-                    <img t-att-src="'data:image/jpeg;base64,' + line.product_image_field.decode('utf-8')" style="max-width: 100%; max-height: 250px;"/>
-                  </t>
-                  <t t-else="">
-                    Imagen no disponible
-                  </t>
-                </td>
+            <!-- Fichas de productos -->
+            <t t-foreach="o.order_line" t-as="line">
+              <table style="width: 100%; border: 1px solid #000; border-collapse: collapse; margin-bottom: 20px;">
+                <tr style="background-color: #d3d3d3; text-align: center; font-weight: bold;">
+                  <td style="width: 33%; border: 1px solid #000; padding: 5px;"><t t-esc="line.name.upper()"/></td>
+                  <td style="width: 34%; border: 1px solid #000; padding: 5px;">ESPECIFICACIÓN</td>
+                  <td style="width: 33%; border: 1px solid #000; padding: 5px;">PRECIO (SIN IVA)</td>
+                </tr>
+                <tr>
+                  <!-- Imagen -->
+                  <td style="text-align: center; border: 1px solid #000; padding: 10px;">
+                    <t t-if="line.product_image_field">
+                      <img t-att-src="'data:image/jpeg;base64,' + line.product_image_field.decode('utf-8')" style="max-width: 100%; max-height: 250px;"/>
+                    </t>
+                    <t t-else="">
+                      Imagen no disponible
+                    </t>
+                  </td>
 
-                <!-- Descripción -->
-                <td style="border: 1px solid #000; padding: 10px; font-size: 15px;">
-                  <div style="font-weight: bold; text-transform: uppercase;">
-                    <t t-esc="line.name"/>
-                  </div>
-                  <div><strong>Cantidad:</strong> <t t-esc="line.product_uom_qty"/> unidades</div>
-                  <div t-if="line.custom_description" t-raw="line.custom_description"></div>
-                  <div style="margin-top: 10px; font-size: 15px;"><em>Imagen ilustrativa**</em></div>
-                </td>
+                  <!-- Descripción -->
+                  <td style="border: 1px solid #000; padding: 10px; font-size: 15px;">
+                    <div style="font-weight: bold; text-transform: uppercase;">
+                      <t t-esc="line.name"/>
+                    </div>
+                    <div><strong>Cantidad:</strong> <t t-esc="line.product_uom_qty"/> unidades</div>
+                    <div t-if="line.custom_description" t-raw="line.custom_description"></div>
+                    <div style="margin-top: 10px; font-size: 15px;"><em>Imagen ilustrativa**</em></div>
+                  </td>
 
-                <!-- Precio sin IVA -->
-                <td style="text-align: center; vertical-align: middle; font-weight: bold; border: 1px solid #000; font-size: 16px;">
-                  <t t-esc="o.currency_id.format(line.price_subtotal)"/>
-                </td>
-              </tr>
-            </table>
-          </t>
+                  <!-- Precio sin IVA -->
+                  <td style="text-align: center; vertical-align: middle; font-weight: bold; border: 1px solid #000; font-size: 16px;">
+                    <t t-esc="o.currency_id.format(line.price_subtotal)"/>
+                  </td>
+                </tr>
+              </table>
+            </t>
 
-          <!-- Totales -->
-          <div style="text-align: right; font-size: 18px; margin-top: 20px;">
-            <p><strong>Subtotal (sin IVA):</strong> <span t-esc="o.currency_id.format(o.amount_untaxed)"/></p>
-            <p><strong>IVA(19%):</strong> <span t-esc="o.currency_id.format(o.amount_tax)"/></p>
-            <p><strong>Total (con IVA):</strong> <span t-esc="o.currency_id.format(o.amount_total)"/></p>
-          </div>
+            <!-- Totales -->
+            <div style="text-align: right; font-size: 18px; margin-top: 20px;">
+              <p><strong>Subtotal (sin IVA):</strong> <span t-esc="o.currency_id.format(o.amount_untaxed)"/></p>
+              <p><strong>IVA(19%):</strong> <span t-esc="o.currency_id.format(o.amount_tax)"/></p>
+              <p><strong>Total (con IVA):</strong> <span t-esc="o.currency_id.format(o.amount_total)"/></p>
+            </div>
 
-          <div style="margin-top: 30px; font-size: 16px; border-top: 1px solid #000; padding-top: 15px;">
-            <p><strong>HAROL QUIROZ RAMIREZ</strong> </p>
-            <p><strong>DIRECTOR COMERCIAL </strong> </p>
-            <p><strong>3128692900</strong> </p>
-          </div>   
+            <div style="margin-top: 30px; font-size: 16px; border-top: 1px solid #000; padding-top: 15px;">
+              <p><strong>HAROL QUIROZ RAMIREZ</strong> </p>
+              <p><strong>DIRECTOR COMERCIAL </strong> </p>
+              <p><strong>3128692900</strong> </p>
+            </div>   
 
-          <!-- Disclaimer comercial -->
-          <div style="margin-top: 30px; font-size: 15px; border-top: 1px solid #ccc; padding-top: 15px; line-height: 1.7; text-align: justify; color: #555;">
-            <strong >CONDICIONES COMERCIALES:</strong><br/>
-            En Universo Gastronómico SAS fabricamos equipos a medida para cocinas industriales.<br/><br/>
+            <!-- Disclaimer comercial -->
+            <div style="margin-top: 30px; font-size: 15px; border-top: 1px solid #ccc; padding-top: 15px; line-height: 1.7; text-align: justify; color: #555;">
+              <strong >CONDICIONES COMERCIALES:</strong><br/>
+              En Universo Gastronómico SAS fabricamos equipos a medida para cocinas industriales.<br/><br/>
 
-            Los presentes términos y condiciones aplican a todos los equipos comprados en la empresa y el presente documento corresponde a una 
-            cotización que contiene la descripción de los productos, precio y demás condiciones del negocio propuesto, con lo cual, una vez aceptada
-            por el cliente por cualquier medio digital, se constituirá en un contrato comercial.<br/><br/>
+              Los presentes términos y condiciones aplican a todos los equipos comprados en la empresa y el presente documento corresponde a una 
+              cotización que contiene la descripción de los productos, precio y demás condiciones del negocio propuesto, con lo cual, una vez aceptada
+              por el cliente por cualquier medio digital, se constituirá en un contrato comercial.<br/><br/>
 
-            <strong>VIGENCIA:</strong> Esta cotización tendrá un plazo de (12) días calendario a partir del día siguiente a la emisión de esta
-              misma.<br/>
-            <strong>PAGO:</strong> Una vez aceptada la cotización, se requiere un anticipo del 50% del valor total cotizado para iniciar su
-              producción; el saldo restante se hará exigible el día que el proyecto se entregue en su totalidad.<br/>
-            <strong>TIEMPOS DE ENTREGA:</strong>La empresa y el cliente deben acordar una fecha tentativa de entrega, pasados (20) días
-              de la fecha acordada de entrega y el cliente aun no recibe el proyecto; se facturará un costo diario por equipo de
-              $20.000 (COP) como concepto de bodega.<br/>
-            <strong>FLETES Y TRANSPORTE:</strong> Todos los fletes y seguros para envíos fuera de la ciudad de Medellín, serán cubiertos por
-                el cliente, la empresa podrá suministrar una cotización al cliente del transporte requerido.
-                El sitio de destino debe contar con fácil acceso, en caso de presentar dificultades en el acceso al local, el cliente
-                deberá asumir los gastos adicionales por este motivo. Luego de inspeccionar todos los equipos, cantidad y
-                recibirlos a según lo acordado, el cliente debe firmar una remisión de recibido. La empresa no asumirá faltantes,
-                costos por daños o roturas por mala manipulación una vez el cliente haya recibido a satisfacción por escrito.<br/>
-            <strong>GARANTÍA:</strong> La garantía para equipos nuevos será de un (1) año. Esta garantía cubre únicamente mano de obra,
-                    defectos por soldaduras y repuestos, el cliente debe garantizar el mantenimiento preventivo de los equipos de
-                    refrigeración o de gas cada (4) meses. La garantía no cubre ningún mantenimiento preventivo, servicio que deberá
-                    ser solicitado por separado y a costo del cliente.
-                    La garantía no incluye piezas que se desgasten por su normal uso o partes consumibles. La garantía no cubre
-                    daños ocasionados por una mala instalación realizada por el cliente, por un manejo inadecuado o debido a
-                    cambios que sobrepasen los niveles óptimos de voltaje o presión del gas.
-                    se prestará el servicio de garantía en la ciudad de Medellín, pero si el producto se encuentra fuera de la ciudad, el
-                    cliente deberá cubrir los gastos de desplazamiento y estadía del técnico o transporte del equipo si es necesario
-                    llevarlo a la planta de producción en Medellín.<br/>
-            <strong>EXCLUSIONES</strong> Se excluyen de la presente garantía los siguientes conceptos: Todas las piezas eléctricas o
-            electrónicas.<br/>
-              <ul>
-                <li style="padding-left: 20px;">- La garantía de cualquier producto estará sujeta a un diagnóstico técnico.</li>
-                <li style="padding-left: 20px;">- Para tramitar la garantía de un producto instalado se programará una visita técnica de verificación.</li>
-                <li style="padding-left: 20px;">- Toda solicitud se atenderá en un tiempo máximo de ocho (8) días hábiles siguientes a la recepción.</li>
-                <li style="padding-left: 20px;">- El proceso de reparación se realizará dentro de los diez (10) días hábiles contados a partir del día siguiente
-                  a la recepción de la solicitud.</li><br/>
-              </ul>
-            <strong>NO INCLUYE:</strong> <br/>
-              <ul>
-                <li>Trabajos de obra civil como demolición, acabados de paredes o pintura, impermeabilización en techos.</li>
-                <li>Ningún mueble incluye accesorios de plomería y/o grifería.</li> <br/>
-              </ul>
-              Esperamos que esta cotización sea de su agrado y su pronta comunicación, cualquier inquietud o sugerencia no dude en ponerse en contacto
-          </div>
-
-        </div>
-      </t>
+              <strong>VIGENCIA:</strong> Esta cotización tendrá un plazo de (12) días calendario a partir del día siguiente a la emisión de esta
+                misma.<br/>
+              <strong>PAGO:</strong> Una vez aceptada la cotización, se requiere un anticipo del 50% del valor total cotizado para iniciar su
+                producción; el saldo restante se hará exigible el día que el proyecto se entregue en su totalidad.<br/>
+              <strong>TIEMPOS DE ENTREGA:</strong>La empresa y el cliente deben acordar una fecha tentativa de entrega, pasados (20) días
+                de la fecha acordada de entrega y el cliente aun no recibe el proyecto; se facturará un costo diario por equipo de
+                $20.000 (COP) como concepto de bodega.<br/>
+              <strong>FLETES Y TRANSPORTE:</strong> Todos los fletes y seguros para envíos fuera de la ciudad de Medellín, serán cubiertos por
+                  el cliente, la empresa podrá suministrar una cotización al cliente del transporte requerido.
+                  El sitio de destino debe contar con fácil acceso, en caso de presentar dificultades en el acceso al local, el cliente
+                  deberá asumir los gastos adicionales por este motivo. Luego de inspeccionar todos los equipos, cantidad y
+                  recibirlos a según lo acordado, el cliente debe firmar una remisión de recibido. La empresa no asumirá faltantes,
+                  costos por daños o roturas por mala manipulación una vez el cliente haya recibido a satisfacción por escrito.<br/>
+              <strong>GARANTÍA:</strong> La garantía para equipos nuevos será de un (1) año. Esta garantía cubre únicamente mano de obra,
+                      defectos por soldaduras y repuestos, el cliente debe garantizar el mantenimiento preventivo de los equipos de
+                      refrigeración o de gas cada (4) meses. La garantía no cubre ningún mantenimiento preventivo, servicio que deberá
+                      ser solicitado por separado y a costo del cliente.
+                      La garantía no incluye piezas que se desgasten por su normal uso o partes consumibles. La garantía no cubre
+                      daños ocasionados por una mala instalación realizada por el cliente, por un manejo inadecuado o debido a
+                      cambios que sobrepasen los niveles óptimos de voltaje o presión del gas.
+                      se prestará el servicio de garantía en la ciudad de Medellín, pero si el producto se encuentra fuera de la ciudad, el
+                      cliente deberá cubrir los gastos de desplazamiento y estadía del técnico o transporte del equipo si es necesario
+                      llevarlo a la planta de producción en Medellín.<br/>
+              <strong>EXCLUSIONES</strong> Se excluyen de la presente garantía los siguientes conceptos: Todas las piezas eléctricas o
+              electrónicas.<br/>
+                <ul>
+                  <li style="padding-left: 20px;">- La garantía de cualquier producto estará sujeta a un diagnóstico técnico.</li>
+                  <li style="padding-left: 20px;">- Para tramitar la garantía de un producto instalado se programará una visita técnica de verificación.</li>
+                  <li style="padding-left: 20px;">- Toda solicitud se atenderá en un tiempo máximo de ocho (8) días hábiles siguientes a la recepción.</li>
+                  <li style="padding-left: 20px;">- El proceso de reparación se realizará dentro de los diez (10) días hábiles contados a partir del día siguiente
+                    a la recepción de la solicitud.</li><br/>
+                </ul>
+              <strong>NO INCLUYE:</strong> <br/>
+                <ul>
+                  <li>Trabajos de obra civil como demolición, acabados de paredes o pintura, impermeabilización en techos.</li>
+                  <li>Ningún mueble incluye accesorios de plomería y/o grifería.</li> <br/>
+                </ul>
+                Esperamos que esta cotización sea de su agrado y su pronta comunicación, cualquier inquietud o sugerencia no dude en ponerse en contacto
+            </div>
+        </t>
+      </t>      
     </t>
   </template>
 </odoo>
