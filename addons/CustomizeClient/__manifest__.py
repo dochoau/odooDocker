@@ -5,7 +5,7 @@
     'license': 'LGPL-3',  # Agrega esta línea
     'category': 'Localization',
     'summary': 'Agrega tipos de identificación colombianos (CC y NIT)',
-    'depends': ['base'],
+    'depends': ['base','l10n_latam_base'],
 
     'installable': True,
     'application': False,

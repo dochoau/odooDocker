@@ -1,7 +1,7 @@
 {
     "name": "CustomizeSaleOrder",
     "version": "1.0",
-    "depends": ["sale", "mrp", "project","CustomizeMRP"],
+    "depends": ["sale", "mrp", "hr", "project","CustomizeMRP"],
     'license': 'LGPL-3',
     'author': "David Ochoa",
     "data": [
