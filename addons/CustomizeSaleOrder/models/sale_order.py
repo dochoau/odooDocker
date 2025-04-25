@@ -86,14 +86,10 @@ class SaleOrder(models.Model):
 
 
         return {
-            # 'type': 'ir.actions.act_url',
-            # 'url': f'/report/html/CustomizeSaleOrder.report_saleorder_custom_html/{self.id}',
-            # 'target': 'new',
             'type': 'ir.actions.report',
             'report_name': 'CustomizeSaleOrder.report_saleorder_custom_html',
             'report_type': 'qweb-pdf',
             'report_file': 'CustomizeSaleOrder.report_saleorder_custom_html',
             'name': 'Cotización - %s' % (self.name),
-            #'context': {'download': True},  # 👈 fuerza descarga del PDF            
         }
 

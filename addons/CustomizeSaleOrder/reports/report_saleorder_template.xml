@@ -2,28 +2,31 @@
   <template id="report_saleorder_custom_html">
     <t t-call= "web.html_container"> 
       <t t-foreach="docs" t-as="o">
-        <t t-call= "web.external_layout">
+        <!-- <t t-call= "CustomizeSaleOrder.custom_external_layout">  -->
+        <t t-call= "web.basic_layout">
           <!-- Contenedor general con borde (marco) -->
             <!-- Encabezado personalizado -->
-            <div style="margin-bottom: 20px; margin-top: 20px;">
-              <div style="display: flex; justify-content: space-between;">
-                <div>
-                  <!-- <strong style="font-size: 16px;">UNIVERSO GASTRONOMICO S.A.S</strong><br/> -->
+            <table style="width: 100%; margin-bottom: 10px;">
+              <tr>
+                <!-- Columna izquierda: texto -->
+                <td style="width: 65%; vertical-align: top;">
+                  <strong style="font-size: 16px;">UNIVERSO GASTRONOMICO S.A.S</strong><br/>
                   <strong>NIT:</strong> 901344210-5<br/>
                   <strong>COTIZACIÓN</strong><br/>
                   <strong>FECHA:</strong> <span t-esc="o.date_order.strftime('%d DE %B DE %Y')"></span><br/>
                   <strong>SEÑORES:</strong> <span t-esc="o.partner_id.name"></span><br/>
                   <strong>PROYECTO:</strong> <span t-esc="o.project_id.name or ''"></span><br/>
-                </div>
-                <!-- <div>
-                  <img t-att-src="'/logo.png'" style="width: 200px;"/>
-                </div> -->
-              </div>
+                </td>
+                
+                <!-- Columna derecha: logo alineado a la derecha -->
+                <td style="width: 35%; text-align: right; vertical-align: top;">
+                  <img t-att-src="'/logo.png'" style="width: 180px; object-fit: contain;" />
+                </td>
+              </tr>
+            </table>
               <p style="font-size: 16px; margin-top: 10px;">
                 A continuación, se referencian los equipos requeridos con sus especificaciones. Las imágenes anexadas no siempre corresponden al producto debido a que nuestros equipos se fabrican sobre medida o según la necesidad de cada cliente y negocio.
               </p>
-            </div>
-
             <!-- Fichas de productos -->
             <t t-foreach="o.order_line" t-as="line">
               <table style="width: 100%; border: 1px solid #000; border-collapse: collapse; margin-bottom: 20px;">

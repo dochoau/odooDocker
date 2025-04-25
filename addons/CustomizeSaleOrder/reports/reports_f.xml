@@ -2,7 +2,6 @@
   <record id="action_report_saleorder_custom_html" model="ir.actions.report">
     <field name="name">Cotización HTML</field>
     <field name="model">sale.order</field>
-    <!-- <field name="report_type">qweb-html</field> -->
     <field name="report_type">qweb-pdf</field>
     <field name="report_name">CustomizeSaleOrder.report_saleorder_custom_html</field>
     <field name="report_file">CustomizeSaleOrder.report_saleorder_custom_html</field>
