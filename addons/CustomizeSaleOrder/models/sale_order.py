@@ -92,4 +92,3 @@ class SaleOrder(models.Model):
             'report_file': 'CustomizeSaleOrder.report_saleorder_custom_html',
             'name': 'Cotización - %s' % (self.name),
         }
-

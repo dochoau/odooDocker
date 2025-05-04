@@ -1,0 +1,28 @@
+Ocultar Menú
+Técnico-> Intefaz de Usuario->elementos del menú oculté Tableros y "Actividades Pendientes"
+    Inventario:
+        Información General
+        Operaciones
+        Inventario/Configuración
+        Inventario/Reportes
+    Fabricación: 	
+        Manufactura/Operaciones/Órdenes de desmontaje
+        Manufactura/Operaciones/Desechar
+        Manufactura/Productos/Listas de materiales
+    Contactos:
+    CRM:
+        CRM/Ventas/Mi flujo
+        CRM/Ventas/Mis actividades
+        CRM/Ventas/Mis cotizaciones
+        CRM/Ventas/Equipos
+        CRM/Reportes
+        CRM/Configuración/Ajustes
+        CRM/Configuración
+    Facturación
+    Proyectos:
+        Proyecto/Tareas/Mis tareas
+        Proyecto/Reportes
+        Proyecto/Configuración
+    
+
+

@@ -17,4 +17,3 @@ class SaleOrderLine(models.Model):
         compute="_compute_product_image",
         store=True,
     )
-
