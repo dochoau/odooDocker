@@ -85,10 +85,15 @@ class SaleOrder(models.Model):
                 })
 
 
+        # return {
+        #     'type': 'ir.actions.report',
+        #     'report_name': 'CustomizeSaleOrder.report_saleorder_custom_html',
+        #     'report_type': 'qweb-pdf',
+        #     'report_file': 'CustomizeSaleOrder.report_saleorder_custom_html',
+        #     'name': 'Cotización - %s' % (self.name),
+        # }
         return {
-            'type': 'ir.actions.report',
-            'report_name': 'CustomizeSaleOrder.report_saleorder_custom_html',
-            'report_type': 'qweb-pdf',
-            'report_file': 'CustomizeSaleOrder.report_saleorder_custom_html',
-            'name': 'Cotización - %s' % (self.name),
+            'type': 'ir.actions.act_url',
+            'url': f'/report/html/CustomizeSaleOrder.report_saleorder_custom_html_nopdf/{self.id}',
+            'target': 'new',
         }

@@ -7,7 +7,8 @@
     "data": [
         "views/cotizacion_view.xml",
         "reports/report_saleorder_template.xml",
-        "reports/reports_f.xml"
+        "reports/reports_f.xml",
+        "reports/report_sale_order_html.xml"
      ],
     "installable": True,
     "auto_install": False,
