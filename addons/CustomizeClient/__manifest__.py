@@ -4,7 +4,7 @@
     'author': 'David',
     'license': 'LGPL-3',  # Agrega esta línea
     'category': 'Localization',
-    'summary': 'Agrega tipos de identificación colombianos (CC y NIT)',
+    'summary': 'Agrega tipos de identificación colombianos (CC y NIT) y permite agregar imagenes',
     'depends': ['base','l10n_latam_base'],
 
     'installable': True,

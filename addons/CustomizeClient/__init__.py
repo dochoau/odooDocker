@@ -1,3 +1,5 @@
+from . import models
+
 from odoo import api, SUPERUSER_ID
 import json
 def funcion_hook(env):

@@ -52,17 +52,7 @@
                       Imagen no disponible
                     </t>
                   </td>
-                  <!-- <td style="text-align: center; border: 1px solid #000; padding: 10px;">
-                    <t t-if="line.product_id.image_128">
-                      <div>Imagen detectada</div>
-                      <p t-if="line.product_id.image_128">
-                        <t t-esc="line.product_id.image_128[:100]"/>
-                      </p>
-                    </t>
-                    <t t-else="">
-                      Imagen no disponible
-                    </t>
-                  </td> -->
+
                   <!-- Descripción -->
                   <td style="border: 1px solid #000; padding: 10px; font-size: 15px;">
                     <div style="font-weight: bold; text-transform: uppercase;">
@@ -83,9 +73,9 @@
 
             <!-- Totales -->
             <div style="text-align: right; font-size: 18px; margin-top: 20px;">
-              <p><strong>Subtotal (sin IVA):</strong> <span t-esc="o.currency_id.format(o.amount_untaxed)"/></p>
-              <p><strong>IVA(19%):</strong> <span t-esc="o.currency_id.format(o.amount_tax)"/></p>
-              <p><strong>Total (con IVA):</strong> <span t-esc="o.currency_id.format(o.amount_total)"/></p>
+              <!-- <p><strong>Subtotal (sin IVA):</strong> <span t-esc="o.currency_id.format(o.amount_untaxed)"/></p>
+              <p><strong>IVA(19%):</strong> <span t-esc="o.currency_id.format(o.amount_tax)"/></p> -->
+              <p><strong>Total:</strong> <span t-esc="o.currency_id.format(o.amount_total)"/></p>
             </div>
 
             <div style="margin-top: 30px; font-size: 16px; border-top: 1px solid #000; padding-top: 15px;">
@@ -116,7 +106,7 @@
                   deberá asumir los gastos adicionales por este motivo. Luego de inspeccionar todos los equipos, cantidad y
                   recibirlos a según lo acordado, el cliente debe firmar una remisión de recibido. La empresa no asumirá faltantes,
                   costos por daños o roturas por mala manipulación una vez el cliente haya recibido a satisfacción por escrito.<br/>
-              <strong>GARANTÍA:</strong> La garantía para equipos nuevos será de un (1) año. Esta garantía cubre únicamente mano de obra,
+              <strong>GARANTÍA:</strong> La garantía para equEstaEsLaClaveSeguraipos nuevos será de un (1) año. Esta garantía cubre únicamente mano de obra,
                       defectos por soldaduras y repuestos, el cliente debe garantizar el mantenimiento preventivo de los equipos de
                       refrigeración o de gas cada (4) meses. La garantía no cubre ningún mantenimiento preventivo, servicio que deberá
                       ser solicitado por separado y a costo del cliente.
@@ -143,6 +133,11 @@
                 </ul>
                 Esperamos que esta cotización sea de su agrado y su pronta comunicación, cualquier inquietud o sugerencia no dude en ponerse en contacto
             </div>
+
+            <div style="margin-top: 30px;"></div>
+
+            <!-- Recuadro principal -->
+            
             </div>
         </t>
       </t>      
