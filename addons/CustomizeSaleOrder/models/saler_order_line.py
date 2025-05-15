@@ -22,7 +22,7 @@ class SaleOrderLine(models.Model):
 
     def get_image_jpeg_base64(self):
         jpeg_base64 = self.product_id.image_1920.decode('utf-8')
-        logger.info(jpeg_base64)
+        #logger.info(jpeg_base64)
         return jpeg_base64
 
 

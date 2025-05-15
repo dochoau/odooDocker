@@ -136,8 +136,38 @@
 
             <div style="margin-top: 30px;"></div>
 
-            <!-- Recuadro principal -->
-            
+          <!-- Logos Clientes -->
+          <div style="border: 2px solid #000; margin: 40px 0; padding: 30px;">
+
+              <!-- Encabezado sin márgenes ni separación lateral -->
+              <h3 style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: 24px;
+                  border-bottom: 2px solid #ccc;
+                  background-color: #eee;
+                  margin: 0;
+                  padding: 15px 0;
+                  width: 100%;
+              ">
+                  CLIENTES UNIVERSO GASTRONÓMICO
+              </h3>
+
+              <table style="width:100%; border-spacing: 25px 35px; margin-top: 30px;">
+                  <t t-set="img_path" t-value="'/CustomizeSaleOrder/static/src/img/'"/>
+                  <t t-foreach="range(0, 4)" t-as="row">
+                      <tr>
+                          <t t-foreach="range(1, 4)" t-as="col">
+                              <td style="text-align: center; padding: 10px 0;">
+                                  <img t-att-src="img_path + 'logo' + str(row * 3 + col) + 'n.png'"
+                                      style="width: 120px; height: auto;" alt="Logo"/>
+                              </td>
+                          </t>
+                      </tr>
+                  </t>
+              </table>
+          </div>
+
             </div>
         </t>
       </t>      
