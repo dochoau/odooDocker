@@ -15,6 +15,11 @@ class ProjectTask(models.Model):
     sale_order_id = fields.Many2one('sale.order', string="Cotización")
     manufacturing_order_id = fields.Many2one('mrp.production', string="Orden de Producción")
 
+    #Información sobre valor del proyecto
+    amount_total = fields.Float(string = 'Valor Vendido')
+    amount_due =  fields.Float(string = 'Valor Pendiente')
+    info_iva = fields.Char()
+
     def create(self, vals, cond = True):
         """Evita la creación de tareas que no cumplan con las condiciones"""
 
@@ -29,8 +34,9 @@ class ProjectTask(models.Model):
             raise exceptions.UserError(("No puede crear nuevas tareas en esta étapa"))   
 
         if vals.get('stage_id') == cotizar_stage.id and cond:
-            if vals.get('name') != 'Cotizar':
-                raise exceptions.UserError(("Solo se pueden crear cotizaciones"))
+            raise exceptions.UserError(("No puede crear nuevas ordenes de producción"))
+            # if vals.get('name') != 'Cotizar':
+            #     raise exceptions.UserError(("Solo se pueden crear cotizaciones"))
         
         if vals.get('stage_id') == por_fabricar_stage.id and cond:
             raise exceptions.UserError(("No puede crear nuevas ordenes de producción"))
@@ -128,7 +134,8 @@ class ProjectTask(models.Model):
         stage_name = self.stage_id.name.lower()
         if stage_name == "cotizar":
             if self.sale_order_id:
-                return {
+                if self.name =="Cotizar":
+                    return {
                     'name': "Cotización",
                     'type': 'ir.actions.act_window',
                     'res_model': 'sale.order',
@@ -136,6 +143,16 @@ class ProjectTask(models.Model):
                     'target': 'current',
                     'res_id': self.sale_order_id.id,
                     'force_context': True
+                }
+                else:
+                    return {
+                        'name': 'Pagos del Proyecto',
+                        'type': 'ir.actions.act_window',
+                        'res_model': 'project.project',
+                        'view_mode': 'form',
+                        'view_id': self.env.ref('CustomizeProject.view_project_payment_custom_form').id,
+                        'target': 'current',  # 'new' para popup (modal), 'current' para pantalla completa
+                        'res_id':self.project_id.id,
                 }
             else:
                 return {
@@ -197,7 +214,16 @@ class ProjectTask(models.Model):
             }    
         else:
             raise UserError("No hay documentos asociados a esta tarea.")
-############Pendiente qué hacer con el botón de la última tarea############################
+    
+    #Ocultar a los usuarios específicos la tarea de gestionar cartera
+    # @api.model
+    # def search(self, args, offset=0, limit=None, order=None, count=False):
+    #     user_id_to_hide = 7  # ID del usuario que quieres ocultar
+    #     if self.env.uid == user_id_to_hide:
+    #         # Buscar la tarea con nombre "Gestionar Cartera"
+    #         task_to_hide = self.search([('name', '=', 'Gestionar Cartera')], limit=1)
+    #         if task_to_hide:
+    #             # Agregar condición para excluir esa tarea
+    #             args = args + [('id', '!=', task_to_hide.id)]
         
-
-
+    #     return super(ProjectTask, self).search(args, offset=offset, limit=limit, order=order, count=count)

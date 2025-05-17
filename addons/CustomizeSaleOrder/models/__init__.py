@@ -1,1 +1,1 @@
-from . import sale_order, saler_order_line
+from . import sale_order, saler_order_line, confirm_wizard

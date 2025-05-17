@@ -19,6 +19,42 @@ class ProjectProject(models.Model):
     )
     last_stage = fields.Char(string='Última Etapa', readonly=True)
 
+    #Información sobre valor del proyecto
+    amount_total = fields.Float(string = 'Valor Vendido')
+    amount_due =  fields.Float(string = 'Valor Pendiente', compute='_compute_amount_due', store=True)
+    info_iva = fields.Char()
+
+    payment_ids = fields.One2many('project.payment', 'project_id', string='Pagos')
+
+    #Generar el valor de la deuda
+    @api.depends('amount_total', 'payment_ids.amount')
+    def _compute_amount_due(self):
+        for project in self:
+            total_paid = sum(project.payment_ids.mapped('amount'))
+            project.amount_due = project.amount_total - total_paid
+            
+            # Buscar la tarea "Gestionar Cartera"
+            cartera_task = self.env['project.task'].search([
+                ('project_id', '=', project.id),
+                ('name', 'ilike', 'Gestionar Cartera')
+            ], limit=1)
+
+            if cartera_task:
+                cartera_task.amount_due = project.amount_due
+
+    #Abrir el wizard
+    def action_open_payment_wizard(self):
+        self.ensure_one()
+        return {
+            'name': 'Registrar Pago',
+            'type': 'ir.actions.act_window',
+            'res_model': 'project.payment.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_project_id': self.id,
+            },
+        }
 
 
     #Sobre escribe el método Create
@@ -127,3 +163,17 @@ class ProjectProject(models.Model):
                 project.write({
                     'color': color,
                     'last_stage': status                })
+       
+
+    def action_project_payment_wizard(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Registrar Pago',
+            'res_model': 'project.payment.wizard',
+            'view_mode': 'form',
+            'view_id': self.env.ref('CustomizeProject.view_project_payment_wizard_form').id,
+            'target': 'new',
+            'context': {
+                'default_project_id': self.id,
+            }
+        }

@@ -10,7 +10,9 @@
         'security/ir.model.access.csv',
         'views/project_views.xml',
         'views/kanban_view.xml',
-        'views/kanban_project_view.xml'
+        'views/kanban_project_view.xml',
+        'views/cartera_view.xml',
+        'views/cartera_list_view.xml'
     ],
     'installable': True,
     'application': False,

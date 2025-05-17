@@ -32,6 +32,7 @@ class SaleOrder(models.Model):
                 if order.task_id:
                     order.task_id.sale_order_id = order.id  # Asignar la cotización a la tarea
 
+            logger.info("Se ejecutó el create")
             return sale_orders
 
         
@@ -97,3 +98,20 @@ class SaleOrder(models.Model):
             'url': f'/report/html/CustomizeSaleOrder.report_saleorder_custom_html_nopdf/{self.id}',
             'target': 'new',
         }
+
+    def action_confirm(self):
+        self.ensure_one()
+        return {
+            'name': 'Confirmar Cotización',
+            'type': 'ir.actions.act_window',
+            'res_model': 'sale.order.confirm.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_sale_order_id': self.id,
+            }
+        }
+
+    def action_confirm_original(self):
+        """Método original de confirmación (guardado para ser llamado desde el wizard)"""
+        return super(SaleOrder, self).action_confirm()

@@ -1,0 +1,63 @@
+<odoo>
+    <record id="view_project_payment_wizard_form" model="ir.ui.view">
+        <field name="name">project.payment.wizard.form</field>
+        <field name="model">project.payment.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Registrar Pago">
+                <group>
+                    <field name="project_id" readonly="1"/>
+                    <field name="date" readonly="1"/>
+                    <field name="amount"/>
+                    <field name="note"/>
+                </group>
+                <footer>
+                    <button string="Registrar Pago" type="object" name="action_confirm_payment" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_project_payment_wizard" model="ir.actions.act_window">
+        <field name="name">Registrar Pago</field>
+        <field name="res_model">project.payment.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_project_payment_wizard_form"/>
+        <field name="target">new</field>
+    </record>    
+    <record id="view_project_payment_custom_form" model="ir.ui.view">
+        <field name="name">project.project.custom.form</field>
+        <field name="model">project.project</field>
+        <field name="arch" type="xml">
+            <form string="Gestión de Pagos del Proyecto">
+                <sheet>
+                    <group>
+                    <field name="name" string="Nombre del Proyecto" readonly="1" nolabel="0" class="o_field_bold"/>
+                    <field name="amount_total" string="Total Vendido: $" readonly="1" nolabel="0" class="o_field_bold"/>
+                    <field name="amount_due" string="Por Pagar: $" readonly="1" nolabel="0" class="o_field_bold"/>
+                    <field name="info_iva" string="Info IVA" readonly="1" nolabel="0" class="o_field_bold"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Pagos Registrados">
+                            <button name="action_project_payment_wizard" 
+                                string="Registrar Pago" 
+                                type="object" 
+                                class="oe_highlight"
+                                style="margin-bottom: 10px;"/>
+                            <field name="payment_ids" readonly="1">
+                                <list string="Pagos Realizados" >
+                                    <field name="date" />
+                                    <field name="amount" />
+                                    <field name="note" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+</odoo>
