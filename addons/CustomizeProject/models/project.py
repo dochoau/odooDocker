@@ -25,6 +25,7 @@ class ProjectProject(models.Model):
     info_iva = fields.Char()
 
     payment_ids = fields.One2many('project.payment', 'project_id', string='Pagos')
+    dashboard_id = fields.Many2one('project.dashboard.cartera', string='Dashboard')
 
     #Generar el valor de la deuda
     @api.depends('amount_total', 'payment_ids.amount')
@@ -79,7 +80,15 @@ class ProjectProject(models.Model):
                 stage.write({'sequence': index}, cond = False)
             stages[stage_name] = stage
 
-        # Crear los proyectos normalmente
+        # Asignarlo al dashboard
+        if 'dashboard_id' not in vals_list:
+            dashboard = self.env['project.dashboard.cartera'].search([], limit=1)
+        if not dashboard:
+            # Si no existe, lo crea
+            dashboard = self.env['project.dashboard.cartera'].create({
+                'name': 'Dashboard General',  # Ajusta el nombre según lo que desees
+            })
+        vals_list['dashboard_id'] = dashboard.id
         projects = super().create(vals_list)
 
         for project in projects:
