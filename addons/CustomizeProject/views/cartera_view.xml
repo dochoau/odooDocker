@@ -46,9 +46,9 @@
                                 style="margin-bottom: 10px;"/>
                             <field name="payment_ids" readonly="1">
                                 <list string="Pagos Realizados" >
-                                    <field name="date" />
-                                    <field name="amount" />
-                                    <field name="note" />
+                                    <field name="date" width="50"/>
+                                    <field name="amount" width="100"/>
+                                    <field name="note" width="200"/>
                                 </list>
                             </field>
                         </page>

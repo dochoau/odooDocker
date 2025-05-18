@@ -33,6 +33,8 @@ class ProjectProject(models.Model):
         for project in self:
             total_paid = sum(project.payment_ids.mapped('amount'))
             project.amount_due = project.amount_total - total_paid
+            if project.amount_due <= 0 and project.dashboard_id:
+                project.dashboard_id = False
             
             # Buscar la tarea "Gestionar Cartera"
             cartera_task = self.env['project.task'].search([
@@ -80,15 +82,7 @@ class ProjectProject(models.Model):
                 stage.write({'sequence': index}, cond = False)
             stages[stage_name] = stage
 
-        # Asignarlo al dashboard
-        if 'dashboard_id' not in vals_list:
-            dashboard = self.env['project.dashboard.cartera'].search([], limit=1)
-        if not dashboard:
-            # Si no existe, lo crea
-            dashboard = self.env['project.dashboard.cartera'].create({
-                'name': 'Dashboard General',  # Ajusta el nombre según lo que desees
-            })
-        vals_list['dashboard_id'] = dashboard.id
+
         projects = super().create(vals_list)
 
         for project in projects:
@@ -102,7 +96,7 @@ class ProjectProject(models.Model):
                 'project_id': project.id,
                 'stage_id': stages['Cotizar'].id  # Asignar a la etapa "Cotizar"
             }, cond = False)
-
+        
         return projects
 
     def _update_project_stage_info(self):
@@ -166,7 +160,7 @@ class ProjectProject(models.Model):
                     status = "Entregando"
                     color = 11    
                 elif least_stage_name == "Entregado":
-                    status = "Terminado"
+                    status = "Proyecto Entregado Completamente"
                     color = 10
 
                 project.write({

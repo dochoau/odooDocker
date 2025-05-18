@@ -43,5 +43,17 @@ class SaleOrderConfirmWizard(models.TransientModel):
             "amount_due": order.project_id.amount_due,
             "info_iva": order.project_id.info_iva
         }, cond = False)
+        
+        #asignar a la cartera
+        project = order.project_id
+        # Buscar el dashboard existente o crear uno nuevo
+        dashboard = self.env['project.dashboard.cartera'].search([], limit=1)
+        if not dashboard:
+            dashboard = self.env['project.dashboard.cartera'].create({
+                'name': 'Dashboard General'
+            })
 
+        # Asignar el dashboard al proyecto
+        project.dashboard_id = dashboard.id         
+        
         return {'type': 'ir.actions.act_window_close'}
