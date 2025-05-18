@@ -25,12 +25,12 @@
                     </field>
                 </page>
             </xpath>
-            <xpath expr="//page[@name='general_information']" position="attributes">
+            <!-- <xpath expr="//page[@name='general_information']" position="attributes">
                 <attribute name="invisible">1</attribute> <!-- esto tampoco funcionará si la vista es OWL -->
             </xpath>
             <xpath expr="//page[@name='sales']" position="attributes">
                 <attribute name="invisible">1</attribute> <!-- esto tampoco funcionará si la vista es OWL -->
-            </xpath>
+            </xpath> -->
             <!-- <xpath expr="//page[@name='inventory']" position="attributes">
                 <attribute name="invisible">1</attribute> 
             </xpath>                                                                                                                   -->
