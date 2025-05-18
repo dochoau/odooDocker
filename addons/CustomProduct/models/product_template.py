@@ -24,4 +24,7 @@ class ProductTemplate(models.Model):
         if manufacture_route:
             defaults['route_ids'] = [(6, 0, [manufacture_route.id])]
 
+        #Lo crea siempre como servicio
+        defaults['type'] = 'service'
+
         return defaults
