@@ -25,10 +25,12 @@
                 <field name="amount_due"/>
                 <field name="info_iva"/>
         </xpath>
-
+        <xpath expr="//kanban" position="inside">
+            <field name="puede_ver_tarjeta"/>
+        </xpath>
         <!-- Mostrar valores SOLO en tarea "Gestionar Cartera" -->
         <xpath expr="//t[@t-name='card']/main" position="inside">
-            <t t-if="record.name.raw_value == 'Gestionar Cartera'">
+            <t t-if="record.name.raw_value == 'Gestionar Cartera' and record.puede_ver_tarjeta.raw_value">
                 <div class="oe_kanban_details">
                     <div><strong>Valor Proyecto: $</strong> <span t-esc="record.amount_total.value"/></div>
                     <div><strong>Pendiente: $</strong> <span t-esc="record.amount_due.value"/></div>
@@ -36,14 +38,16 @@
                 </div>
             </t>
         </xpath>
-            <!-- Se agrega el botón con las funcionalidades -->
-            <xpath expr="//t[@t-name='card']/main" position="inside">
+        <!-- Se agrega el botón con las funcionalidades -->
+        <xpath expr="//t[@t-name='card']/main" position="inside">
+            <t t-if="record.name.raw_value != 'Gestionar Cartera' or (record.name.raw_value == 'Gestionar Cartera' and record.puede_ver_tarjeta.raw_value)">
                 <button name="open_related_document"
                             type="object"
                             string="Ir"
                             class="oe_button"
-                            icon="fa-play"/>          
-            </xpath>       
+                            icon="fa-play"/>
+            </t>          
+        </xpath>       
         </field>
     </record>
 </odoo>

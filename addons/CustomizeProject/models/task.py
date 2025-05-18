@@ -20,6 +20,19 @@ class ProjectTask(models.Model):
     amount_due =  fields.Float(string = 'Valor Pendiente')
     info_iva = fields.Char()
 
+    #Función para oculatr a los usuarios que no son administradores
+    puede_ver_tarjeta = fields.Boolean(string="Puede ver la tarjeta", compute='_compute_puede_ver_tarjeta')
+
+    def _compute_puede_ver_tarjeta(self):
+        for task in self:
+            logger.info(task.name)
+            grupo = self.env['res.groups'].search([('name', '=', 'AdministradoresUG')], limit=1)
+            logger.info(grupo.name )        
+            task.puede_ver_tarjeta = grupo in self.env.user.groups_id
+            logger.info(grupo in self.env.user.groups_id)      
+            
+
+    
     def create(self, vals, cond = True):
         """Evita la creación de tareas que no cumplan con las condiciones"""
 
