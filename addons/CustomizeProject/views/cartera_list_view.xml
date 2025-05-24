@@ -6,10 +6,10 @@
             <form string="Totales de Cartera">
                 <sheet>
                     <group string="Desglose Cartera" colspan="2">
-                        <field name="total_general" readonly="1"/>
-                        <field name="total_cotizando_fabricar" readonly="1"/>
-                        <field name="total_en_proceso" readonly="1"/>
-                        <field name="total_terminado" readonly="1"/>
+                        <field name="total_general" readonly="1" class="o_bold o_text_larger"/>
+                        <field name="total_cotizando_fabricar" readonly="1" class="o_bold o_text_larger"/>
+                        <field name="total_en_proceso" readonly="1" class="o_bold o_text_larger"/>
+                        <field name="total_terminado" readonly="1" class="o_bold o_text_larger"/>
                     </group>
                     <group string="Proyectos">
                         <field name="project_ids" readonly="1" domain="[('amount_due', '&gt;', 0)]">
