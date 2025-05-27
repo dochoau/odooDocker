@@ -5,7 +5,20 @@
         <field name="arch" type="xml">
             <form string="Confirmar Cotización">
                 <group>
+                    <label for="commission" string="Ingrese el valor de la comisión"/>
+                    <div class="o_row">
+                        <field name="commission" />
+                        <span style="line-height: 32px; margin-left: 5px;">%</span>
+                    </div>
                     <field name="opcion_iva" widget="radio"/>
+                <div class="o_row">
+                    <field name="valor_impuesto_aiu" 
+                        invisible="opcion_iva != 'aiu'" 
+                        required="opcion_iva == 'aiu'" 
+                        nolabel="1"/>
+                    <span style="line-height: 32px; margin-left: 5px;" 
+                        invisible="opcion_iva != 'aiu'">%</span>
+                </div>
                 </group>
                 <footer>
                     <button string="Confirmar" type="object" name="confirmar" class="btn-primary"/>

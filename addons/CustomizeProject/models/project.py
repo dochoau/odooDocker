@@ -18,6 +18,8 @@ class ProjectProject(models.Model):
         help="Cliente asociado a este proyecto."
     )
     last_stage = fields.Char(string='Última Etapa', readonly=True)
+    #Valor de la comisión
+    commission = fields.Float(string = 'Comisión por la Venta')
 
     #Información sobre valor del proyecto
     amount_total = fields.Float(string = 'Valor Vendido')

@@ -1,4 +1,5 @@
-from odoo import models, fields
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 class SaleOrderConfirmWizard(models.TransientModel):
     _name = 'sale.order.confirm.wizard'
@@ -7,27 +8,44 @@ class SaleOrderConfirmWizard(models.TransientModel):
     sale_order_id = fields.Many2one('sale.order', string='Cotización', required=True)
     opcion_iva = fields.Selection([
         ('con', 'Con IVA'),
-        ('sin', 'Sin IVA')
+        ('sin', 'Sin IVA'),
+        ('aiu', 'AIU')
     ], string='Opción de IVA', default='con', required=True)
+    valor_impuesto_aiu = fields.Float(string='Valor del Impuesto (AIU)')
+    commission = fields.Float(string = 'Comisión por la Venta')
+
+    @api.constrains('opcion_iva', 'valor_impuesto_aiu')
+    def _check_valor_impuesto_aiu(self):
+        for wizard in self:
+            if wizard.opcion_iva == 'aiu' and not wizard.valor_impuesto_aiu:
+                raise ValidationError("Debe ingresar el valor del impuesto AIU.")
 
     def confirmar(self):
         self.ensure_one()
         order = self.sale_order_id
 
-        # Actualizar proyecto relacionado
         if order.project_id:
             if self.opcion_iva == 'con':
-                # Si el total y el subtotal son iguales, asumimos que no se agregó IVA aún, así que lo calculamos
                 if order.amount_total == order.amount_untaxed:
                     project_amount = order.amount_untaxed * 1.19
                 else:
                     project_amount = order.amount_total
                 order.project_id.amount_total = project_amount
                 order.project_id.info_iva = "Proyecto con IVA"
-            else:
+
+            elif self.opcion_iva == 'sin':
                 order.project_id.amount_total = order.amount_untaxed
                 order.project_id.info_iva = "Proyecto sin IVA"
+
+            elif self.opcion_iva == 'aiu':
+                # Validación extra por seguridad
+                if not self.valor_impuesto_aiu:
+                    raise ValidationError("Debe ingresar el valor del impuesto AIU.")
+                order.project_id.amount_total = order.amount_untaxed * (1 + (self.valor_impuesto_aiu/100))
+                order.project_id.info_iva = f"Proyecto con AIU ({self.valor_impuesto_aiu :.2f}%)"
+
             order.project_id.amount_due = order.project_id.amount_total
+            order.project_id.commission = self.commission
 
         # Confirmar cotización
         order.action_confirm_original()
