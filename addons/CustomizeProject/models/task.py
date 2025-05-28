@@ -20,6 +20,9 @@ class ProjectTask(models.Model):
     amount_due =  fields.Float(string = 'Valor Pendiente')
     info_iva = fields.Char()
 
+    #Deudas a Proveedores
+    supplier_debt = fields.Float(string = 'Cuentas por Pagar a Proveedores')
+
     #Función para oculatr a los usuarios que no son administradores
     puede_ver_tarjeta = fields.Boolean(string="Puede ver la tarjeta", compute='_compute_puede_ver_tarjeta')
 
@@ -157,7 +160,7 @@ class ProjectTask(models.Model):
                     'res_id': self.sale_order_id.id,
                     'force_context': True
                 }
-                else:
+                elif self.name =="Gestionar Cartera":
                     return {
                         'name': 'Pagos del Proyecto',
                         'type': 'ir.actions.act_window',
@@ -167,6 +170,16 @@ class ProjectTask(models.Model):
                         'target': 'current',  # 'new' para popup (modal), 'current' para pantalla completa
                         'res_id':self.project_id.id,
                 }
+                else:
+                    return {
+                        'name': 'Pagos del Proyecto',
+                        'type': 'ir.actions.act_window',
+                        'res_model': 'project.project',
+                        'view_mode': 'form',
+                        'view_id': self.env.ref('CustomizeProject.view_project_form_supplier_debt').id,
+                        'target': 'current',  # 'new' para popup (modal), 'current' para pantalla completa
+                        'res_id':self.project_id.id,
+                    }
             else:
                 return {
                     'name': "Crear Cotización",

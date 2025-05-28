@@ -21,6 +21,14 @@ class ProjectProject(models.Model):
     #Valor de la comisión
     commission = fields.Float(string = 'Comisión por la Venta')
 
+    #Deudas a Proveedores
+    supplier_debt = fields.Float(string = 'Cuentas por Pagar a Proveedores', compute='_compute_supplier_debt')
+    supplier_debt_ids = fields.One2many(
+    'project.supplier.debt', 'project_id', string='Créditos de Proveedores'
+    )
+    resumen_deuda_proveedores = fields.Text(string='Resumen por Proveedor', compute='_compute_resumen_deuda_proveedores')
+
+
     #Información sobre valor del proyecto
     amount_total = fields.Float(string = 'Valor Vendido')
     amount_due =  fields.Float(string = 'Valor Pendiente', compute='_compute_amount_due', store=True)
@@ -46,9 +54,47 @@ class ProjectProject(models.Model):
 
             if cartera_task:
                 cartera_task.amount_due = project.amount_due
+    
+    #Calcular Deuda por proveedor
+    @api.depends('supplier_debt_ids')
+    def _compute_resumen_deuda_proveedores(self):
+        for project in self:
+            resumen = {}
+            for debt in project.supplier_debt_ids:
+                partner = debt.partner_id
+                if partner not in resumen:
+                    resumen[partner] = 0
+                resumen[partner] += debt.monto if debt.tipo_trx == 'Pre' else -debt.monto
 
-    #Abrir el wizard
+            texto = "\n".join(f"{partner.name}: ${monto: ,.2f}" for partner, monto in resumen.items() if monto > 0)
+            project.resumen_deuda_proveedores = texto
+    
+    #Calcular deuda total
+    @api.depends('supplier_debt_ids')
+    def _compute_supplier_debt(self):
+        for project in self:
+            total = 0.0
+            for debt in project.supplier_debt_ids:
+                if debt.tipo_trx == 'Pre':
+                    total += debt.monto
+                elif debt.tipo_trx == 'abn':
+                    total -= debt.monto
+            project.supplier_debt = total
+        
+            # Buscar la tarea "Gestionar Cartera"
+            supplier_task = self.env['project.task'].search([
+                ('project_id', '=', project.id),
+                ('name', 'ilike', 'Gestionar Crédito Proveedores')
+            ], limit=1)
+
+            if supplier_task:
+                supplier_task.supplier_debt = project.supplier_debt
+
+
+
+    #Abrir el wizard Cartera
     def action_open_payment_wizard(self):
+        logger.info("Entra")
         self.ensure_one()
         return {
             'name': 'Registrar Pago',
@@ -60,6 +106,20 @@ class ProjectProject(models.Model):
                 'default_project_id': self.id,
             },
         }
+
+    #Abrir el wizard proveedores
+    def action_open_supplier_debt_wizard(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Registrar Transacción',
+            'res_model': 'project.supplier.debt.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_project_id': self.id
+            }
+        }  
 
 
     #Sobre escribe el método Create

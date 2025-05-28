@@ -24,6 +24,7 @@
                 <field name="amount_total"/>
                 <field name="amount_due"/>
                 <field name="info_iva"/>
+                <field name="supplier_debt"/>
         </xpath>
         <xpath expr="//kanban" position="inside">
             <field name="puede_ver_tarjeta"/>
@@ -38,6 +39,14 @@
                 </div>
             </t>
         </xpath>
+        <!-- Mostrar valores SOLO en tarea "Cuentas por Pagar Proveedores -->
+        <xpath expr="//t[@t-name='card']/main" position="inside">
+            <t t-if="record.name.raw_value == 'Gestionar Crédito Proveedores' and record.puede_ver_tarjeta.raw_value">
+                <div class="oe_kanban_details">
+                    <div><strong>Cuentas por Pagar a Proveedores: $</strong> <span t-esc="record.supplier_debt.value"/></div>
+                </div>
+            </t>
+        </xpath>        
         <!-- Se agrega el botón con las funcionalidades -->
         <xpath expr="//t[@t-name='card']/main" position="inside">
             <t t-if="record.name.raw_value != 'Gestionar Cartera' or (record.name.raw_value == 'Gestionar Cartera' and record.puede_ver_tarjeta.raw_value)">

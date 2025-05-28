@@ -31,10 +31,10 @@
             <form string="Gestión de Pagos del Proyecto">
                 <sheet>
                     <group>
-                    <field name="name" string="Nombre del Proyecto" readonly="1" nolabel="0" class="o_field_bold"/>
-                    <field name="amount_total" string="Total Vendido: $" readonly="1" nolabel="0" class="o_field_bold"/>
-                    <field name="amount_due" string="Por Pagar: $" readonly="1" nolabel="0" class="o_field_bold"/>
-                    <field name="info_iva" string="Info IVA" readonly="1" nolabel="0" class="o_field_bold"/>
+                        <field name="name" string="Nombre del Proyecto" readonly="1" nolabel="0" class="o_field_bold"/>
+                        <field name="amount_total" string="Total Vendido: $" readonly="1" nolabel="0" class="o_field_bold"/>
+                        <field name="amount_due" string="Por Pagar: $" readonly="1" nolabel="0" class="o_field_bold"/>
+                        <field name="info_iva" string="Info IVA" readonly="1" nolabel="0" class="o_field_bold"/>
                     </group>
 
                     <notebook>

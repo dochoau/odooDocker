@@ -4,4 +4,5 @@ access_project_task,access.project.task,model_project_task,,1,1,1,1
 access_project_payment,access.project.project,model_project_payment,,1,1,1,1
 access_project_payment_wizard,access.project.project,model_project_payment_wizard,,1,1,1,1
 access_project_dashboard_cartera,access.project.project,model_project_dashboard_cartera,,1,1,1,1
-
+access_project_supplier_debt,access.project.project,model_project_supplier_debt,,1,1,1,1
+access_project_supplier_debt_wizard,access.project.project,model_project_supplier_debt_wizard,,1,1,1,1

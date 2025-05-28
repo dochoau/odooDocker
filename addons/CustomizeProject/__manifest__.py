@@ -12,7 +12,8 @@
         'views/kanban_view.xml',
         'views/kanban_project_view.xml',
         'views/cartera_view.xml',
-        'views/cartera_list_view.xml'
+        'views/cartera_list_view.xml',
+        'views/supplier_debt_view.xml'
     ],
     'installable': True,
     'application': False,

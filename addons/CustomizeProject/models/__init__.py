@@ -1,1 +1,1 @@
-from . import project, task, taskStage, project_payment, payment_wizard, project_dashboard_cartera
+from . import project, task, taskStage, project_payment, payment_wizard, project_dashboard_cartera, project_supplier_debt, project_debt_wizard
