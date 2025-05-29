@@ -14,11 +14,12 @@
                     <group string="Proyectos">
                         <field name="project_ids" readonly="1" domain="[('amount_due', '&gt;', 0)]">
                             <list>
-                                <field name="name" string="Proyecto" width="200"/>
-                                <field name="last_stage" string="Étapa" width="250"/>
-                                <field name="info_iva" string="Información" width="200"/>
-                                <field name="amount_total" string="Valor del Proyecto" width="200"/>
-                                <field name="amount_due" string="Valor por Pagar" width="200"/>
+                                <field name="name" string="Proyecto" width="150"/>
+                                <field name="partner_id" string="Cliente" width="150"/>
+                                <field name="last_stage" string="Étapa" width="200"/>
+                                <field name="info_iva" string="Información" width="150"/>
+                                <field name="amount_total" string="Valor del Proyecto" width="150"/>
+                                <field name="amount_due" string="Valor por Pagar" width="150"/>
                                 <button name="action_open_payment_wizard" type="object" string="Gestionar Cartera" class="btn-primary"/>
                             </list>
                         </field>

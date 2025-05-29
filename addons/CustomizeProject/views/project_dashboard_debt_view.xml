@@ -1,0 +1,54 @@
+<odoo>
+    <record id="view_project_dashboard_debt_form" model="ir.ui.view">
+        <field name="name">project.dashboard.debt.form</field>
+        <field name="model">project.dashboard.debt</field>
+        <field name="arch" type="xml">
+            <form string="Resumen de Cuentas por Pagar">
+                <sheet>
+                    <group>
+                        <field name="total_debt" readonly="1" class="o_bold o_text_larger"/>
+                        <field name="total_by_supplier" readonly="1" widget="text" class="o_bold o_text_larger"/>
+                    </group>
+                    <notebook>
+                        <page string="Proyectos">
+                            <field name="project_ids" 
+                                readonly="1" 
+                                domain="[('supplier_debt', '&gt;', 0)]"
+                                context="{'form_view_ref': 'CustomizeProject.view_project_form_supplier_debt'}">
+                                <list >
+                                    <field name="name" width="200"/>
+                                    <field name="partner_id" width="200"/>
+                                    <field name="last_stage" width="200"/>
+                                    <field name="supplier_debt" width="200"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_project_dashboard_debt" model="ir.actions.act_window">
+        <field name="name">Cuentas por Pagar</field>
+        <field name="res_model">project.dashboard.debt</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+        <field name="view_id" ref="view_project_dashboard_debt_form"/>
+        <field name="res_id">1</field>
+    </record>
+
+    <!-- Menú principal: Compras dentro de Proyecto -->
+    <menuitem id="menu_project_purchase_root"
+            name="Compras"
+            parent="project.menu_main_pm"
+            sequence="100"
+            />
+
+
+    <menuitem id="menu_dashboard_cuentas_por_pagar"
+            name="Gestionar cuentas por pagar"
+            parent="menu_project_purchase_root"
+            action="action_project_dashboard_debt"
+            sequence="10" />
+</odoo>            

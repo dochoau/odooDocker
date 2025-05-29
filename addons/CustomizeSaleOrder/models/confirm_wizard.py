@@ -65,7 +65,7 @@ class SaleOrderConfirmWizard(models.TransientModel):
         
         #asignar a la cartera
         project = order.project_id
-        # Buscar el dashboard existente o crear uno nuevo
+        # Buscar el dashboard existente o crear uno nuevo de cartera
         dashboard = self.env['project.dashboard.cartera'].search([], limit=1)
         if not dashboard:
             dashboard = self.env['project.dashboard.cartera'].create({
@@ -74,6 +74,16 @@ class SaleOrderConfirmWizard(models.TransientModel):
 
         # Asignar el dashboard al proyecto
         project.dashboard_id = dashboard.id
+
+        # Buscar el dashboard existente o crear uno nuevo de cuentas por pagar
+        dashboard_debt = self.env['project.dashboard.debt'].search([], limit=1)
+        if not dashboard_debt:
+            dashboard_debt = self.env['project.dashboard.debt'].create({
+                'name': 'Dashboard General Cuentas por Pagar'
+            })
+
+        # Asignar el dashboard al proyecto
+        project.dashboard_debt_id = dashboard_debt.id
 
         #Crea la tarea para gestionar créditos a proveedors
         stage = self.env["project.task.type"].search([("name", "=", "Cotizar")], limit=1)

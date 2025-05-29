@@ -22,12 +22,14 @@ class ProjectProject(models.Model):
     commission = fields.Float(string = 'Comisión por la Venta')
 
     #Deudas a Proveedores
-    supplier_debt = fields.Float(string = 'Cuentas por Pagar a Proveedores', compute='_compute_supplier_debt')
+    supplier_debt = fields.Float(string = 'Cuentas por Pagar', compute='_compute_supplier_debt', store=True)
     supplier_debt_ids = fields.One2many(
     'project.supplier.debt', 'project_id', string='Créditos de Proveedores'
     )
-    resumen_deuda_proveedores = fields.Text(string='Resumen por Proveedor', compute='_compute_resumen_deuda_proveedores')
+    resumen_deuda_proveedores = fields.Text(string='Deuda por Proveedor', compute='_compute_resumen_deuda_proveedores')
 
+    #Relación Dashboard Cuentas por Pagar
+    dashboard_debt_id = fields.Many2one('project.dashboard.debt', string='Dashboard de Deuda')
 
     #Información sobre valor del proyecto
     amount_total = fields.Float(string = 'Valor Vendido')

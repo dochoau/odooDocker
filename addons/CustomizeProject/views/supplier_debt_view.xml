@@ -35,6 +35,7 @@
                 <sheet>
                     <group string="Cuentas por Pagar a Proveedores">
                         <field name="name" string="Nombre del Proyecto" readonly="1" nolabel="0" class="o_field_bold"/>
+                        <field name="partner_id" string="Cliente" readonly="1" nolabel="0" class="o_field_bold"/>
                         <field name="supplier_debt" string="Deuda Total" readonly="1" nolabel="0" class="o_field_bold"/>
                         <field name="resumen_deuda_proveedores" readonly="1" widget="text" class="o_field_bold"/>
                     </group>
@@ -45,8 +46,8 @@
                                     <field name="fecha" width="50"/>
                                     <field name="partner_id" width="50"/>
                                     <field name="tipo_trx" width="50"/>
-                                    <field name="monto" width="50"/>
-                                    <field name="nota" width="50"/>
+                                    <field name="monto" width="100"/>
+                                    <field name="nota" width="100"/>
                                 </list>
                             </field>
                             <button name="action_open_supplier_debt_wizard" string="Agregar Transacción" type="object" class="oe_highlight"/>

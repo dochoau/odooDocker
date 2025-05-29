@@ -7,7 +7,7 @@ class ProjectSupplierDebt(models.Model):
 
     project_id = fields.Many2one('project.project', string='Proyecto', required=True, ondelete='cascade')
     partner_id = fields.Many2one('res.partner', string='Proveedor', domain="[('supplier_rank', '>', 0)]", required=True)
-    monto = fields.Float(string='Monto solicitado', required=True)
+    monto = fields.Float(string='Monto', required=True)
     fecha = fields.Date(string='Fecha del crédito', required=True, default=fields.Date.today)
     nota = fields.Text(string='Nota')
     tipo_trx = fields.Selection([
