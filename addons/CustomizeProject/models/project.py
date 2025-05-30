@@ -19,7 +19,9 @@ class ProjectProject(models.Model):
     )
     last_stage = fields.Char(string='Última Etapa', readonly=True)
     #Valor de la comisión
-    commission = fields.Float(string = 'Comisión por la Venta')
+    commission = fields.Float(string = 'Comisión por la Venta (%)')
+    commission_money = fields.Float(string = 'Comisión por la Venta ($)')
+    commission_due = fields.Float(string = 'Valor Pendiente Comisión', compute='_compute_amount_due', store=True)
 
     #Deudas a Proveedores
     supplier_debt = fields.Float(string = 'Cuentas por Pagar', compute='_compute_supplier_debt', store=True)

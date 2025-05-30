@@ -25,6 +25,9 @@
                 <field name="amount_due"/>
                 <field name="info_iva"/>
                 <field name="supplier_debt"/>
+                <field name="commission"/>
+                <field name="commission_money"/>
+                <field name="commission_due"/>
         </xpath>
         <xpath expr="//kanban" position="inside">
             <field name="puede_ver_tarjeta"/>
@@ -46,16 +49,23 @@
                     <div><strong>Cuentas por Pagar a Proveedores: $</strong> <span t-esc="record.supplier_debt.value"/></div>
                 </div>
             </t>
+        </xpath>
+        <!-- Mostrar valores SOLO en tarea "Gestionar Pago Comisiones" -->
+        <xpath expr="//t[@t-name='card']/main" position="inside">
+            <t t-if="record.name.raw_value == 'Gestionar Pago Comisiones' and record.puede_ver_tarjeta.raw_value">
+                <div class="oe_kanban_details">
+                    <div><strong>Comisión Proyecto( </strong> <span t-esc="record.commission.value"/> <strong>%): </strong><strong>$</strong> <span t-esc="record.commission_money.value"/></div>
+                    <div><strong>Deuda Comisión: $</strong> <span t-esc="record.commission_due.value"/></div>
+                </div>
+            </t>
         </xpath>        
         <!-- Se agrega el botón con las funcionalidades -->
         <xpath expr="//t[@t-name='card']/main" position="inside">
-            <t t-if="record.name.raw_value != 'Gestionar Cartera' or (record.name.raw_value == 'Gestionar Cartera' and record.puede_ver_tarjeta.raw_value)">
                 <button name="open_related_document"
                             type="object"
                             string="Ir"
                             class="oe_button"
-                            icon="fa-play"/>
-            </t>          
+                            icon="fa-play"/>        
         </xpath>       
         </field>
     </record>

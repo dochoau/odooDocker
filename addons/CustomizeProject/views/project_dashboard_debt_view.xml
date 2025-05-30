@@ -5,6 +5,11 @@
         <field name="arch" type="xml">
             <form string="Resumen de Cuentas por Pagar">
                 <sheet>
+                    <div>
+                        <h1 style="font-weight:bold; font-size: 24px; margin-bottom: 10px;">
+                            Resumen Cuentas por Pagar a Proveedores
+                        </h1>
+                    </div>
                     <group>
                         <field name="total_debt" readonly="1" class="o_bold o_text_larger"/>
                         <field name="total_by_supplier" readonly="1" widget="text" class="o_bold o_text_larger"/>

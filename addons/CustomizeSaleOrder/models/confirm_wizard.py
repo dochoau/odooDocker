@@ -46,11 +46,59 @@ class SaleOrderConfirmWizard(models.TransientModel):
 
             order.project_id.amount_due = order.project_id.amount_total
             order.project_id.commission = self.commission
+            order.project_id.commission_money = self.commission * order.project_id.amount_total
+            order.project_id.commission_due = order.project_id.commission_money
             order.project_id.supplier_debt = 0
 
         # Confirmar cotización
         order.action_confirm_original()
 
+        #######Comisiones por Pagar#######
+        #Crea la tarea para gestionar créditos a proveedors
+        stage = self.env["project.task.type"].search([("name", "=", "Cotizar")], limit=1)
+        self.env["project.task"].create({
+            "name": "Gestionar Pago Comisiones",
+            "project_id": order.project_id.id,
+            "stage_id": stage.id,
+            "description": "Tarea para Gestionar el Pago de Comisiones",
+            "commission" : order.project_id.commission, 
+            "commission_due": order.project_id.commission_due,
+            "commission_money":  order.project_id.commission_money
+        }, cond = False)         
+
+        # Buscar el dashboard existente o crear uno nuevo de cuentas por pagar
+        # dashboard_debt = self.env['project.dashboard.debt'].search([], limit=1)
+        # if not dashboard_debt:
+        #     dashboard_debt = self.env['project.dashboard.debt'].create({
+        #         'name': 'Dashboard General Cuentas por Pagar'
+        #     })
+
+        # Asignar el dashboard al proyecto
+        # project.dashboard_debt_id = dashboard_debt.id
+
+
+       #######Cuentas por Pagar Proveedores#######
+        #Crea la tarea para gestionar créditos a proveedors
+        stage = self.env["project.task.type"].search([("name", "=", "Cotizar")], limit=1)
+        self.env["project.task"].create({
+            "name": "Gestionar Crédito Proveedores",
+            "project_id": order.project_id.id,
+            "stage_id": stage.id,
+            "description": "Tarea para Gestionar Crédito a Proveedores",
+            "supplier_debt": 0
+        }, cond = False)         
+
+        # Buscar el dashboard existente o crear uno nuevo de cuentas por pagar
+        dashboard_debt = self.env['project.dashboard.debt'].search([], limit=1)
+        if not dashboard_debt:
+            dashboard_debt = self.env['project.dashboard.debt'].create({
+                'name': 'Dashboard General Cuentas por Pagar'
+            })
+
+        # Asignar el dashboard al proyecto
+        project.dashboard_debt_id = dashboard_debt.id
+
+        ########Cartera Clientes########
         #Crea la tarea para gestionar cartera
         stage = self.env["project.task.type"].search([("name", "=", "Cotizar")], limit=1)
         self.env["project.task"].create({
@@ -74,25 +122,5 @@ class SaleOrderConfirmWizard(models.TransientModel):
 
         # Asignar el dashboard al proyecto
         project.dashboard_id = dashboard.id
-
-        # Buscar el dashboard existente o crear uno nuevo de cuentas por pagar
-        dashboard_debt = self.env['project.dashboard.debt'].search([], limit=1)
-        if not dashboard_debt:
-            dashboard_debt = self.env['project.dashboard.debt'].create({
-                'name': 'Dashboard General Cuentas por Pagar'
-            })
-
-        # Asignar el dashboard al proyecto
-        project.dashboard_debt_id = dashboard_debt.id
-
-        #Crea la tarea para gestionar créditos a proveedors
-        stage = self.env["project.task.type"].search([("name", "=", "Cotizar")], limit=1)
-        self.env["project.task"].create({
-            "name": "Gestionar Crédito Proveedores",
-            "project_id": order.project_id.id,
-            "stage_id": stage.id,
-            "description": "Tarea para Gestionar Crédito a Proveedores",
-            "supplier_debt": 0
-        }, cond = False)         
         
         return {'type': 'ir.actions.act_window_close'}

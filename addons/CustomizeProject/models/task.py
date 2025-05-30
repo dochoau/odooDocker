@@ -23,6 +23,11 @@ class ProjectTask(models.Model):
     #Deudas a Proveedores
     supplier_debt = fields.Float(string = 'Cuentas por Pagar a Proveedores')
 
+    #Comisiones
+    commission = fields.Float(string = 'Comisión por la Venta (%)')
+    commission_money = fields.Float(string = 'Comisión por la Venta ($)')
+    commission_due = fields.Float(string = 'Valor Pendiente Comisión')
+
     #Función para oculatr a los usuarios que no son administradores
     puede_ver_tarjeta = fields.Boolean(string="Puede ver la tarjeta", compute='_compute_puede_ver_tarjeta')
 
@@ -34,6 +39,9 @@ class ProjectTask(models.Model):
             task.puede_ver_tarjeta = grupo in self.env.user.groups_id
             logger.info(grupo in self.env.user.groups_id)      
             
+    def f_puede_ver_tarjeta(self):
+        grupo = self.env['res.groups'].search([('name', '=', 'AdministradoresUG')], limit=1)
+        return  grupo in self.env.user.groups_id
 
     
     def create(self, vals, cond = True):
@@ -151,6 +159,8 @@ class ProjectTask(models.Model):
         if stage_name == "cotizar":
             if self.sale_order_id:
                 if self.name =="Cotizar":
+                    if not self.f_puede_ver_tarjeta():
+                        raise exceptions.UserError("No puedes entrar en esta tarea")
                     return {
                     'name': "Cotización",
                     'type': 'ir.actions.act_window',
@@ -161,6 +171,8 @@ class ProjectTask(models.Model):
                     'force_context': True
                 }
                 elif self.name =="Gestionar Cartera":
+                    if not self.f_puede_ver_tarjeta():
+                        raise exceptions.UserError("No puedes entrar en esta tarea")                    
                     return {
                         'name': 'Pagos del Proyecto',
                         'type': 'ir.actions.act_window',
@@ -171,6 +183,8 @@ class ProjectTask(models.Model):
                         'res_id':self.project_id.id,
                 }
                 else:
+                    if not self.f_puede_ver_tarjeta():
+                        raise exceptions.UserError("No puedes entrar en esta tarea")                    
                     return {
                         'name': 'Pagos del Proyecto',
                         'type': 'ir.actions.act_window',
@@ -181,6 +195,8 @@ class ProjectTask(models.Model):
                         'res_id':self.project_id.id,
                     }
             else:
+                if not self.f_puede_ver_tarjeta():
+                    raise exceptions.UserError("No puedes entrar en esta tarea")                
                 return {
                     'name': "Crear Cotización",
                     'type': 'ir.actions.act_window',
@@ -215,6 +231,8 @@ class ProjectTask(models.Model):
                 'force_context': True
             }
         elif stage_name == "terminado":
+            if not self.f_puede_ver_tarjeta():
+                raise exceptions.UserError("No puedes entrar en esta tarea")            
             return {
                 'name': ('Iniciar Proceso de Instalación'),
                 'type': 'ir.actions.act_window',
@@ -227,6 +245,8 @@ class ProjectTask(models.Model):
                 }
             }
         elif stage_name == "instalación":
+            if not self.f_puede_ver_tarjeta():
+                raise exceptions.UserError("No puedes entrar en esta tarea")                  
             return {
                 'name': ('Iniciar Proceso de Instalación'),
                 'type': 'ir.actions.act_window',

@@ -5,6 +5,11 @@
         <field name="arch" type="xml">
             <form string="Totales de Cartera">
                 <sheet>
+                    <div>
+                        <h1 style="font-weight:bold; font-size: 24px; margin-bottom: 10px;">
+                            Gestionar Cartera
+                        </h1>
+                    </div>
                     <group string="Desglose Cartera" colspan="2">
                         <field name="total_general" readonly="1" class="o_bold o_text_larger"/>
                         <field name="total_cotizando_fabricar" readonly="1" class="o_bold o_text_larger"/>
