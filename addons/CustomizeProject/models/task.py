@@ -27,6 +27,7 @@ class ProjectTask(models.Model):
     commission = fields.Float(string = 'Comisión por la Venta (%)')
     commission_money = fields.Float(string = 'Comisión por la Venta ($)')
     commission_due = fields.Float(string = 'Valor Pendiente Comisión')
+    partner_id_v = fields.Many2one('res.partner', string='Vendedor', domain="[('category_id.name', '=', 'Vendedor')]")
 
     #Función para oculatr a los usuarios que no son administradores
     puede_ver_tarjeta = fields.Boolean(string="Puede ver la tarjeta", compute='_compute_puede_ver_tarjeta')
@@ -182,11 +183,11 @@ class ProjectTask(models.Model):
                         'target': 'current',  # 'new' para popup (modal), 'current' para pantalla completa
                         'res_id':self.project_id.id,
                 }
-                else:
+                elif self.name =="Gestionar Crédito Proveedores":
                     if not self.f_puede_ver_tarjeta():
                         raise exceptions.UserError("No puedes entrar en esta tarea")                    
                     return {
-                        'name': 'Pagos del Proyecto',
+                        'name': 'Pago a Proveedores',
                         'type': 'ir.actions.act_window',
                         'res_model': 'project.project',
                         'view_mode': 'form',
@@ -194,6 +195,18 @@ class ProjectTask(models.Model):
                         'target': 'current',  # 'new' para popup (modal), 'current' para pantalla completa
                         'res_id':self.project_id.id,
                     }
+                else :
+                    if not self.f_puede_ver_tarjeta():
+                        raise exceptions.UserError("No puedes entrar en esta tarea")                    
+                    return {
+                        'name': 'Pagos de comisión',
+                        'type': 'ir.actions.act_window',
+                        'res_model': 'project.project',
+                        'view_mode': 'form',
+                        'view_id': self.env.ref('CustomizeProject.view_project_form_commission_debt').id,
+                        'target': 'current',  # 'new' para popup (modal), 'current' para pantalla completa
+                        'res_id':self.project_id.id,
+                    }                
             else:
                 if not self.f_puede_ver_tarjeta():
                     raise exceptions.UserError("No puedes entrar en esta tarea")                

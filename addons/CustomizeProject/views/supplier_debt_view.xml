@@ -39,9 +39,9 @@
                         </h1>
                     </div>
                     <group string="Cuentas por Pagar a Proveedores">
-                        <field name="name" string="Nombre del Proyecto" readonly="1" nolabel="0" class="o_field_bold"/>
-                        <field name="partner_id" string="Cliente" readonly="1" nolabel="0" class="o_field_bold"/>
-                        <field name="supplier_debt" string="Deuda Total" readonly="1" nolabel="0" class="o_field_bold"/>
+                        <field name="name" string="Nombre del Proyecto:" readonly="1" nolabel="0" class="o_field_bold"/>
+                        <field name="partner_id" string="Cliente:" readonly="1" nolabel="0" class="o_field_bold"/>
+                        <field name="supplier_debt" string="Deuda Total:" readonly="1" nolabel="0" class="o_field_bold"/>
                         <field name="resumen_deuda_proveedores" readonly="1" widget="text" class="o_field_bold"/>
                     </group>
                     <notebook>

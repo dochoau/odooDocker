@@ -28,6 +28,7 @@
                 <field name="commission"/>
                 <field name="commission_money"/>
                 <field name="commission_due"/>
+                <field name="partner_id_v"/>
         </xpath>
         <xpath expr="//kanban" position="inside">
             <field name="puede_ver_tarjeta"/>
@@ -37,7 +38,7 @@
             <t t-if="record.name.raw_value == 'Gestionar Cartera' and record.puede_ver_tarjeta.raw_value">
                 <div class="oe_kanban_details">
                     <div><strong>Valor Proyecto: $</strong> <span t-esc="record.amount_total.value"/></div>
-                    <div><strong>Pendiente: $</strong> <span t-esc="record.amount_due.value"/></div>
+                    <div><strong>Pendiente por Cobrar: $</strong> <span t-esc="record.amount_due.value"/></div>
                     <div><strong>Info IVA: </strong> <span t-esc="record.info_iva.value"/></div>
                 </div>
             </t>
@@ -56,6 +57,7 @@
                 <div class="oe_kanban_details">
                     <div><strong>Comisión Proyecto( </strong> <span t-esc="record.commission.value"/> <strong>%): </strong><strong>$</strong> <span t-esc="record.commission_money.value"/></div>
                     <div><strong>Deuda Comisión: $</strong> <span t-esc="record.commission_due.value"/></div>
+                    <div><strong>Vendedor: </strong> <span t-esc="record.partner_id_v.value"/></div>
                 </div>
             </t>
         </xpath>        

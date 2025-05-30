@@ -21,8 +21,14 @@ class ProjectProject(models.Model):
     #Valor de la comisión
     commission = fields.Float(string = 'Comisión por la Venta (%)')
     commission_money = fields.Float(string = 'Comisión por la Venta ($)')
-    commission_due = fields.Float(string = 'Valor Pendiente Comisión', compute='_compute_amount_due', store=True)
-
+    commission_due = fields.Float(string = 'Valor Pendiente Comisión', compute='_compute_commision_due', store=True)
+    partner_id_v = fields.Many2one('res.partner', string='Vendedor', domain="[('category_id.name', '=', 'Vendedor')]", required = True)
+    commission_debt_ids = fields.One2many(
+    'project.commission.debt', 'project_id', string='Abonos a Comisión Vendedores'
+    )
+    #Relación Dashboard Cuentas por Pagar
+    dashboard_commission_id = fields.Many2one('project.dashboard.commission', string='Dashboard de Comisiones')
+  
     #Deudas a Proveedores
     supplier_debt = fields.Float(string = 'Cuentas por Pagar', compute='_compute_supplier_debt', store=True)
     supplier_debt_ids = fields.One2many(
@@ -34,6 +40,7 @@ class ProjectProject(models.Model):
     dashboard_debt_id = fields.Many2one('project.dashboard.debt', string='Dashboard de Deuda')
 
     #Información sobre valor del proyecto
+    amount_total_untaxed = fields.Float(string = 'Valor Proyecto sin Impuestos')
     amount_total = fields.Float(string = 'Valor Vendido')
     amount_due =  fields.Float(string = 'Valor Pendiente', compute='_compute_amount_due', store=True)
     info_iva = fields.Char()
@@ -94,7 +101,24 @@ class ProjectProject(models.Model):
             if supplier_task:
                 supplier_task.supplier_debt = project.supplier_debt
 
+    #Calcular el valor restante comisión
+    @api.depends('commission_money', 'commission_debt_ids.abono')
+    def _compute_commision_due(self):
+        for project in self:
+            total_paid = sum(project.commission_debt_ids.mapped('abono'))
+            project.commission_due = project.commission_money - total_paid
 
+            if project.commission_due <= 0 and project.dashboard_commission_id:
+                project.dashboard_commission_id = False
+            
+            # Buscar la tarea "Gestionar Cartera"
+            cartera_task = self.env['project.task'].search([
+                ('project_id', '=', project.id),
+                ('name', 'ilike', 'Gestionar Pago Comisiones')
+            ], limit=1)
+
+            if cartera_task:
+                cartera_task.commission_due = project.commission_due
 
     #Abrir el wizard Cartera
     def action_open_payment_wizard(self):
@@ -125,6 +149,20 @@ class ProjectProject(models.Model):
             }
         }  
 
+    #Abrir el wizard comisiones
+    def action_open_commission_debt_wizard(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Abonar a Comisión',
+            'res_model': 'project.commission.debt.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_project_id': self.id,
+                'default_partner_id_v': self.partner_id_v.id
+            }
+        }  
 
     #Sobre escribe el método Create
     def create(self, vals_list):

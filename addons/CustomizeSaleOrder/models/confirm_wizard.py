@@ -6,6 +6,7 @@ class SaleOrderConfirmWizard(models.TransientModel):
     _description = 'Confirmar Cotización con IVA o sin IVA'
 
     sale_order_id = fields.Many2one('sale.order', string='Cotización', required=True)
+    partner_id_v = fields.Many2one('res.partner', string='Vendedor', domain="[('category_id.name', '=', 'Vendedor')]", required=True)
     opcion_iva = fields.Selection([
         ('con', 'Con IVA'),
         ('sin', 'Sin IVA'),
@@ -46,15 +47,19 @@ class SaleOrderConfirmWizard(models.TransientModel):
 
             order.project_id.amount_due = order.project_id.amount_total
             order.project_id.commission = self.commission
-            order.project_id.commission_money = self.commission * order.project_id.amount_total
+            order.project_id.commission_money = self.commission * order.amount_untaxed / 100
             order.project_id.commission_due = order.project_id.commission_money
             order.project_id.supplier_debt = 0
+            order.project_id.partner_id_v = self.partner_id_v
+            order.project_id.amount_total_untaxed = order.amount_untaxed
 
         # Confirmar cotización
         order.action_confirm_original()
+        #asignar a la cartera
+        project = order.project_id
 
         #######Comisiones por Pagar#######
-        #Crea la tarea para gestionar créditos a proveedors
+        #Crea la tarea para gestionar pagos comisiones
         stage = self.env["project.task.type"].search([("name", "=", "Cotizar")], limit=1)
         self.env["project.task"].create({
             "name": "Gestionar Pago Comisiones",
@@ -63,18 +68,20 @@ class SaleOrderConfirmWizard(models.TransientModel):
             "description": "Tarea para Gestionar el Pago de Comisiones",
             "commission" : order.project_id.commission, 
             "commission_due": order.project_id.commission_due,
-            "commission_money":  order.project_id.commission_money
+            "commission_money":  order.project_id.commission_money,
+            "partner_id_v": order.project_id.partner_id_v.id
         }, cond = False)         
 
-        # Buscar el dashboard existente o crear uno nuevo de cuentas por pagar
-        # dashboard_debt = self.env['project.dashboard.debt'].search([], limit=1)
-        # if not dashboard_debt:
-        #     dashboard_debt = self.env['project.dashboard.debt'].create({
-        #         'name': 'Dashboard General Cuentas por Pagar'
-        #     })
+        # Buscar el dashboard existente o crear uno nuevo comisiones
+        dashboard_commission = self.env['project.dashboard.commission'].search([], limit=1)
+        
+        if not dashboard_commission:
+            dashboard_commission = self.env['project.dashboard.commission'].create({
+                'name': 'Dashboard General Cuentas por Pagar'
+            })
 
         # Asignar el dashboard al proyecto
-        # project.dashboard_debt_id = dashboard_debt.id
+        project.dashboard_commission_id = dashboard_commission.id
 
 
        #######Cuentas por Pagar Proveedores#######
@@ -111,8 +118,7 @@ class SaleOrderConfirmWizard(models.TransientModel):
             "info_iva": order.project_id.info_iva
         }, cond = False)
         
-        #asignar a la cartera
-        project = order.project_id
+
         # Buscar el dashboard existente o crear uno nuevo de cartera
         dashboard = self.env['project.dashboard.cartera'].search([], limit=1)
         if not dashboard:

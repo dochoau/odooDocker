@@ -5,6 +5,7 @@
         <field name="arch" type="xml">
             <form string="Confirmar Cotización">
                 <group>
+                    <field name="partner_id_v" />
                     <label for="commission" string="Ingrese el valor de la comisión"/>
                     <div class="o_row">
                         <field name="commission" />
