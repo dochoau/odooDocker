@@ -6,7 +6,7 @@
             <form string="Registrar Pago">
                 <group>
                     <field name="project_id" readonly="1"/>
-                    <field name="date" readonly="1"/>
+                    <field name="date" />
                     <field name="amount"/>
                     <field name="note"/>
                 </group>
