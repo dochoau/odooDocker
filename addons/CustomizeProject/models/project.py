@@ -17,7 +17,10 @@ class ProjectProject(models.Model):
         required=True,  # Opcional: si quieres que siempre se seleccione un cliente
         help="Cliente asociado a este proyecto."
     )
+    #Estados del proyecto
     last_stage = fields.Char(string='Última Etapa', readonly=True)
+    estado_final = fields.Char(string='Estado Final', compute='_compute_estado_final', store=True)
+    
     #Valor de la comisión
     commission = fields.Float(string = 'Comisión por la Venta (%)')
     commission_money = fields.Float(string = 'Comisión por la Venta ($)')
@@ -26,7 +29,6 @@ class ProjectProject(models.Model):
     commission_debt_ids = fields.One2many(
     'project.commission.debt', 'project_id', string='Abonos a Comisión Vendedores'
     )
-    #Relación Dashboard Cuentas por Pagar
     dashboard_commission_id = fields.Many2one('project.dashboard.commission', string='Dashboard de Comisiones')
   
     #Deudas a Proveedores
@@ -35,8 +37,6 @@ class ProjectProject(models.Model):
     'project.supplier.debt', 'project_id', string='Créditos de Proveedores'
     )
     resumen_deuda_proveedores = fields.Text(string='Deuda por Proveedor', compute='_compute_resumen_deuda_proveedores')
-
-    #Relación Dashboard Cuentas por Pagar
     dashboard_debt_id = fields.Many2one('project.dashboard.debt', string='Dashboard de Deuda')
 
     #Información sobre valor del proyecto
@@ -284,3 +284,17 @@ class ProjectProject(models.Model):
                 'default_project_id': self.id,
             }
         }
+    
+    #Estado Final del Proyecto
+    @api.depends('commission_due', 'supplier_debt', 'amount_due', 'last_stage')
+    def _compute_estado_final(self):
+        for record in self:
+            if (
+                record.commission_due == 0 and
+                record.supplier_debt == 0 and
+                record.amount_due == 0 and
+                record.last_stage == "Proyecto Entregado Completamente"
+            ):
+                record.estado_final = "Finalizado"
+            else:
+                record.estado_final = ""

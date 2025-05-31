@@ -4,10 +4,38 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.view_project_kanban"/>
         <field name="arch" type="xml">
+            <xpath expr="//kanban" position="inside">
+                    <field name="commission_due"/>
+                    <field name="supplier_debt"/>
+                    <field name="amount_due"/>
+                    <field name="last_stage"/>
+            </xpath>
             <!-- Insertar justo después del display_name -->
             <xpath expr="//t[@t-name='card']//span[@name='partner_name']" position="after">
                 <span class="text-muted fw-bold">
-                    <field name="last_stage"/>
+                    <t t-if="record.last_stage.raw_value != 'Proyecto Entregado Completamente' ">
+                        <div>
+                            <field name="last_stage" class="oe_highlight" style="font-weight:bold; font-size:18px;"/>
+                        </div>
+                    </t>
+                    <t t-if="record.amount_due.raw_value > 0">
+                        <div class="oe_kanban_details">
+                            <div>Cartera por Cobrar</div>
+                        </div>
+                    </t>
+                    <t t-if="record.supplier_debt.raw_value > 0">
+                        <div class="oe_kanban_details">
+                            <div>Cuentas por Pagar a Proveedores</div>
+                        </div>
+                    </t>
+                    <t t-if="record.commission_due.raw_value > 0">
+                        <div class="oe_kanban_details">
+                            <div>Comisión Pendiente</div>
+                        </div>
+                    </t>
+                    <div>
+                        <field name="estado_final" class="oe_highlight" style="font-weight:bold; font-size:18px;"/>
+                    </div>
                 </span>
             </xpath>
              <xpath expr="//field[@name='activity_ids']" position="attributes">
