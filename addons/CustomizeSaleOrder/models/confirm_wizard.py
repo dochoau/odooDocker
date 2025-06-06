@@ -81,7 +81,8 @@ class SaleOrderConfirmWizard(models.TransientModel):
             })
 
         # Asignar el dashboard al proyecto
-        project.dashboard_commission_id = dashboard_commission.id
+        if order.project_id.commission > 0:
+            project.dashboard_commission_id = dashboard_commission.id
 
 
        #######Cuentas por Pagar Proveedores#######

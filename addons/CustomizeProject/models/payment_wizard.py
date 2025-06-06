@@ -23,5 +23,4 @@ class ProjectPaymentWizard(models.TransientModel):
             'amount': self.amount,
             'note': self.note,
         })
-
         return {'type': 'ir.actions.act_window_close'}
