@@ -41,6 +41,7 @@ class SaleOrder(models.Model):
         if self.state == 'draft':
             raise exceptions.UserError(("Primero Confirma la Cotización"))
         stage = self.env["project.task.type"].search([("name", "=", "Por Fabricar")], limit=1)
+        stage_terminado = self.env["project.task.type"].search([("name", "=", "Terminado")], limit=1)
 
         if self.has_created_production_orders:
             raise exceptions.UserError(("Ya se creó las ordenes de producción"))
@@ -53,9 +54,17 @@ class SaleOrder(models.Model):
             self.has_created_production_orders = True
             if not line.product_id:
                 continue
-            if "Logística" not in line.product_id.name:
-                for i in range(qty):
-                    # Crear la orden de producción
+            
+            for i in range(qty):
+                # Crear la orden de producción
+                if line.product_id.producto_tercerizado:
+                    task = self.env["project.task"].create({
+                        "name": f"{project_name} - {line.product_id.display_name}({i+1})",
+                        "project_id": self.project_id.id,
+                        "stage_id": stage_terminado.id,
+                        "description": "Producto Tercerizado o Logística"
+                    }, cond = False)
+                else:
                     production_order = self.env["mrp.production"].create({
                         "product_id": line.product_id.id,
                         "product_qty": 1,

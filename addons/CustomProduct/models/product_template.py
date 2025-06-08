@@ -7,7 +7,8 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     image_catalog_ids = fields.One2many('product.image.catalog', 'product_tmpl_id', string="Catálogo de Imágenes")
-    
+    producto_tercerizado = fields.Boolean(string='Producto tercerizado')
+
     @api.model
     def default_get(self, fields_list):
         defaults = super().default_get(fields_list)
