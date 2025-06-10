@@ -170,7 +170,7 @@ class ProjectProject(models.Model):
         stage_model = self.env['project.task.type']
         
         # Definir las etapas necesarias con su secuencia
-        stage_names = ['Cotizar', 'Por Fabricar', 'Fabricando', 'Terminado', 'Instalación', 'Entregado']
+        stage_names = ['Cotizar', 'Por Fabricar', 'Fabricando', 'Terminado','Proveedores' ,'Instalación', 'Entregado']
         stages = {}
 
         # Buscar o crear las etapas en el orden correcto
@@ -204,15 +204,7 @@ class ProjectProject(models.Model):
         return projects
 
     def _update_project_stage_info(self):
-            stage_order = ['Cotizar', 'Por Fabricar', 'Fabricando', 'Terminado', 'Instalación', 'Entregado']
-            stage_color_map = {
-                'Cotizar': 8,
-                'Por Fabricar': 1,
-                'Fabricando': 3,
-                'Terminado': 7,
-                'Instalación': 11,
-                'Entregado': 10
-            }
+            stage_order = ['Cotizar', 'Por Fabricar', 'Fabricando', 'Terminado','Proveedores' ,'Instalación', 'Entregado']
 
             for project in self:
                 tasks = project.task_ids.filtered(lambda t: t.stage_id.name in stage_order)
@@ -232,13 +224,15 @@ class ProjectProject(models.Model):
 
                     least_stage_name = least_advanced_task.stage_id.name
 
+                    logger.info("Mayor Estado"+stage_name)
+                    logger.info("Menor Estado"+least_stage_name)
+
                 except Exception as e:
                     pass
 
-
-                
-
                 status = ""
+                #Color por defecto
+                color = 9
                 if stage_name == "Cotizar":
                     status = "Cotizando"
                     color = 8
@@ -253,8 +247,11 @@ class ProjectProject(models.Model):
                     color = 3                        
                 elif stage_name == "Terminado" and  least_stage_name == "Terminado" :
                     status = "Terminado"
-                    color = 7                      
-                elif stage_name == "Instalación" and  least_stage_name in ("Por Fabricar", "Fabricando") :
+                    color = 7 
+                elif stage_name == "Proveedores" and  least_stage_name in ("Por Fabricar", "Fabricando", "Proveedores") :
+                    status = "Fabricando"
+                    color = 11                         
+                elif stage_name == "Instalación" and  least_stage_name in ("Por Fabricar", "Fabricando", "Proveedores") :
                     status = "Instalando-Fabricando"
                     color = 11    
                 elif stage_name == "Instalación" and  least_stage_name in ("Instalación", "Terminado") :

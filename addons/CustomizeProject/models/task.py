@@ -54,6 +54,7 @@ class ProjectTask(models.Model):
         terminado_stage = self.env['project.task.type'].search([('name', '=', 'Terminado')], limit=1)
         instalacion_stage = self.env['project.task.type'].search([('name', '=', 'Instalación')], limit=1)
         entregado_stage = self.env['project.task.type'].search([('name', '=', 'Entregado')], limit=1)
+        proveedor_stage = self.env['project.task.type'].search([('name', '=', 'Proveedores')], limit=1)
 
         if not vals.get('stage_id'): 
             raise exceptions.UserError(("No puede crear nuevas tareas en esta étapa"))   
@@ -76,7 +77,10 @@ class ProjectTask(models.Model):
             raise exceptions.UserError(("No puede crear nuevas tareas en esta étapa"))   
            
         if vals.get('stage_id') == entregado_stage.id and cond:
-            raise exceptions.UserError(("No puede crear nuevas tareas en esta étapa"))                              
+            raise exceptions.UserError(("No puede crear nuevas tareas en esta étapa"))     
+        
+        if vals.get('stage_id') == proveedor_stage.id and cond:
+            raise exceptions.UserError(("No puede crear nuevas tareas en esta étapa"))                                  
 
         #Asignar color dependiendo de la tarea
 
@@ -92,6 +96,8 @@ class ProjectTask(models.Model):
             vals['color'] = 11
         elif vals.get('stage_id') == entregado_stage.id:
             vals['color'] = 10
+        elif vals.get('stage_id') == proveedor_stage.id:
+            vals['color'] = 9
         
         #Actualiza el color del proyecto
         task = super().create(vals) 
@@ -109,6 +115,7 @@ class ProjectTask(models.Model):
         terminado_stage = self.env['project.task.type'].search([('name', '=', 'Terminado')], limit=1)
         instalacion_stage = self.env['project.task.type'].search([('name', '=', 'Instalación')], limit=1)
         entregado_stage = self.env['project.task.type'].search([('name', '=', 'Entregado')], limit=1)
+        proveedor_stage = self.env['project.task.type'].search([('name', '=', 'Proveedor')], limit=1)
 
         for task in self:
             if task.is_default_task and any(field in vals for field in ['name', 'project_id']):
@@ -130,6 +137,8 @@ class ProjectTask(models.Model):
             vals['color'] = 11
         elif vals.get('stage_id') == entregado_stage.id:
             vals['color'] = 10
+        elif vals.get('stage_id') == proveedor_stage.id:
+            vals['color'] = 9
 
         #Actualiza el color del proyecto
         task = super().write(vals) 
@@ -243,7 +252,7 @@ class ProjectTask(models.Model):
                 'res_id': self.manufacturing_order_id.id,
                 'force_context': True
             }
-        elif stage_name == "terminado":
+        elif stage_name == "terminado" or stage_name == "proveedores" :
             if not self.f_puede_ver_tarjeta():
                 raise exceptions.UserError("No puedes entrar en esta tarea")            
             return {

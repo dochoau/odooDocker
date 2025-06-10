@@ -20,12 +20,22 @@ class InstallationWizard(models.TransientModel):
         if action_type == 'one':
             task.write({'stage_id': stage_instalando.id}, cond=False)
         elif action_type == 'all':
-            tareas_terminadas = self.env['project.task'].search([
-                ('project_id', '=', task.project_id.id),
-                ('stage_id.name', '=', 'Terminado')
-            ])
-            for tarea in tareas_terminadas:
-                tarea.write({'stage_id': stage_instalando.id}, cond=False)
+            stage = task.stage_id.name
+
+            if stage =="Terminado":
+                tareas_terminadas = self.env['project.task'].search([
+                    ('project_id', '=', task.project_id.id),
+                    ('stage_id.name', '=', 'Terminado')
+                ])
+                for tarea in tareas_terminadas:
+                    tarea.write({'stage_id': stage_instalando.id}, cond=False)
+            else:
+                tareas_terminadas = self.env['project.task'].search([
+                    ('project_id', '=', task.project_id.id),
+                    ('stage_id.name', '=', 'Proveedores')
+                ])
+                for tarea in tareas_terminadas:
+                    tarea.write({'stage_id': stage_instalando.id}, cond=False)                    
 
 
 
