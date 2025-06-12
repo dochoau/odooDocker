@@ -1,1 +1,1 @@
-from . import mrpProduction
+from . import mrpProduction, product_file

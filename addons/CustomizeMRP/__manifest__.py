@@ -7,7 +7,9 @@
     "installable": True,
     "auto_install": False,
     'data': [
+        'security/ir.model.access.csv',
         'views/custom_mrp_view.xml',
-        'views/custom_mrp_list.xml'
+        'views/custom_mrp_list.xml',
+        'views/product_file_views.xml'
     ],
 }
