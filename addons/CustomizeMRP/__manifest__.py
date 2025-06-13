@@ -1,6 +1,6 @@
 {
     "name": "CustomizeMRP",
-    "version": "1.0",
+    "version": "1.2",
     "depends": ["sale", "mrp", "project"],
     'license': 'LGPL-3',
     'author': "David Ochoa",
@@ -10,6 +10,7 @@
         'security/ir.model.access.csv',
         'views/custom_mrp_view.xml',
         'views/custom_mrp_list.xml',
-        'views/product_file_views.xml'
+        'views/product_file_views.xml',
+        'views/download_view.xml'
     ],
 }

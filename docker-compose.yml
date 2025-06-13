@@ -13,7 +13,7 @@ services:
       - ./config:/etc/odoo
       - ./addons:/mnt/extra-addons
       - ./logs:/var/log/odoo
-      - ./product_drawings:/mnt/odoo-product-files
+      -  /mnt/volumen_design:/mnt/odoo-product-files
     environment:
       - PASSWORD_FILE=/run/secrets/postgresql_password
     secrets:

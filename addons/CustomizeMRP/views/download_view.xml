@@ -1,0 +1,31 @@
+<odoo>
+
+    <record id="view_product_file_download_form" model="ir.ui.view">
+    <field name="name">product.file.download.wizard.form</field>
+    <field name="model">product.file.download.wizard</field>
+    <field name="arch" type="xml">
+        <form string="Descargar Todos los Archivos">
+        <footer>
+            <button name="action_download_first_file" string="Descargar Todos los Archivos"
+                    type="object" class="btn btn-primary"/>
+        </footer>
+        </form>
+    </field>
+    </record>
+
+    <record id="action_product_file" model="ir.actions.act_window">
+    <field name="name">Descargar Archivos</field>
+    <field name="res_model">product.file.download.wizard</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+    </record>
+
+    <menuitem 
+    id="menu_product_file" 
+    name="Piloto Descargar Archivos" 
+    parent="mrp.menu_mrp_root" 
+    action="action_product_file"
+    sequence="120"
+    />
+
+</odoo>

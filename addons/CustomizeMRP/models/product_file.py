@@ -1,9 +1,10 @@
 import os
 import base64
+import zipfile
+import io
 from odoo import models, fields, api
-from odoo.tools import config
-from odoo.http import request
-from odoo.exceptions import UserError
+import logging
+logger = logging.getLogger(__name__)
 
 # Ruta donde se guardarán los archivos dentro del contenedor
 UPLOAD_DIR = '/mnt/odoo-product-files'  # Esta ruta debe mapearse en Docker a una carpeta local
@@ -20,18 +21,44 @@ class ProductFile(models.Model):
     @api.model
     def create(self, vals):
         binary_data = vals.pop('file_upload', False)
-        filename = vals.get('file_name')
+        original_filename = vals.get('file_name')
 
-        if binary_data and filename:
+        if binary_data and original_filename:
             os.makedirs(UPLOAD_DIR, exist_ok=True)
-            file_path = os.path.join(UPLOAD_DIR, filename)
 
-            with open(file_path, 'wb') as f:
-                f.write(base64.b64decode(binary_data))
+            # Nombre del archivo zip
+            base_name, _ = os.path.splitext(original_filename)
+            zip_filename = base_name + '.zip'
+            zip_path = os.path.join(UPLOAD_DIR, zip_filename)
 
-            vals['file_path'] = file_path
+            # Crear zip en memoria
+            with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+                zipf.writestr(original_filename, base64.b64decode(binary_data))
+
+            vals['file_path'] = zip_path
+            vals['file_name'] = zip_filename  # Opcional: reemplaza nombre por el zip
 
         return super().create(vals)
+    
+    # @api.model
+    # def create(self, vals):
+    #     binary_data = vals.pop('file_upload', False)
+    #     filename = vals.get('file_name')
+
+    #     if binary_data and filename:
+    #         os.makedirs(UPLOAD_DIR, exist_ok=True)
+    #         file_path = os.path.join(UPLOAD_DIR, filename)
+
+    #         with open(file_path, 'wb') as f:
+    #             f.write(base64.b64decode(binary_data))
+
+    #         vals['file_path'] = file_path
+
+    #     return super().create(vals)
+
+
+    
+
     @api.depends('file_path')
     def _compute_download_url(self):
         for record in self:
@@ -41,11 +68,4 @@ class ProductFile(models.Model):
             else:
                 record.download_url = ''
 
-    def action_download_file(self):
-        if not self.file_path:
-            raise UserError('No hay un archivo disponible para descargar.')
-        return {
-            'type': 'ir.actions.act_url',
-            'url': f'/web/content/product.file/{self.id}/download/{os.path.basename(self.file_path)}',
-            'target': 'new',
-        }
+
