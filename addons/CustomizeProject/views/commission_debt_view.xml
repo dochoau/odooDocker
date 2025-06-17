@@ -56,7 +56,7 @@
                                     <field name="nota" width="100"/>
                                 </list>
                             </field>
-                            <button name="action_open_commission_debt_wizard" string="Agregar Transacción" type="object" class="oe_highlight"/>
+                            <button name="action_open_commission_debt_wizard" string="Pagar Comisión" type="object" class="oe_highlight"/>
                         </page>
                     </notebook>
                 </sheet>

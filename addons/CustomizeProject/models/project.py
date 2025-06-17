@@ -56,6 +56,9 @@ class ProjectProject(models.Model):
             project.amount_due = project.amount_total - total_paid
             if project.amount_due <= 0 and project.dashboard_id:
                 project.dashboard_id = False
+
+            if project.supplier_debt <= 0 and project.dashboard_debt_id and project.estado_final == "Finalizado":
+                project.dashboard_debt_id = False
             
             # Buscar la tarea "Gestionar Cartera"
             cartera_task = self.env['project.task'].search([
@@ -101,6 +104,9 @@ class ProjectProject(models.Model):
             if supplier_task:
                 supplier_task.supplier_debt = project.supplier_debt
 
+            if project.supplier_debt <= 0 and project.dashboard_debt_id and project.estado_final == "Finalizado":
+                project.dashboard_debt_id = False
+
     #Calcular el valor restante comisión
     @api.depends('commission_money', 'commission_debt_ids.abono')
     def _compute_commision_due(self):
@@ -110,6 +116,9 @@ class ProjectProject(models.Model):
 
             if project.commission_due <= 0 and project.dashboard_commission_id:
                 project.dashboard_commission_id = False
+
+            if project.supplier_debt <= 0 and project.dashboard_debt_id and project.estado_final == "Finalizado":
+                project.dashboard_debt_id = False                
             
             # Buscar la tarea "Gestionar Cartera"
             cartera_task = self.env['project.task'].search([
@@ -295,3 +304,6 @@ class ProjectProject(models.Model):
                 record.estado_final = "Finalizado"
             else:
                 record.estado_final = ""
+
+            if record.supplier_debt <= 0 and record.dashboard_debt_id and record.estado_final == "Finalizado":
+                record.dashboard_debt_id = False
