@@ -1,48 +1,32 @@
 <odoo>
-  <!-- Vista tipo formulario -->
-  <record id="view_product_file_form_test" model="ir.ui.view">
-    <field name="name">product.file.form</field>
-    <field name="model">product.file</field>
+  <record id="view_form_product_design_file" model="ir.ui.view">
+    <field name="name">product.file.design.form</field>
+    <field name="model">product.file.design</field>
     <field name="arch" type="xml">
-      <form string="Archivo de Producto">
-        <sheet>
-          <group>
-            <field name="product_id"/>
-            <field name="file_upload"/>
-            <field name="file_name"/>
-            <field name="file_path" readonly="1"/>
+      <form string="Archivos de Diseño">
+        <group>
+          <field name="project_id" readonly="1"/>
+          <field name="product_id" readonly="1"/>
+          <field name="production_id" readonly="1"/>
+        </group>
+
+        <group>
+          <group string="Corte (DXF)">
+            <button name="action_upload_dxf" string="Subir" type="object" class="btn-primary"/>
+            <button name="action_download_dxf" string="Descargar ZIP" type="object"/>
           </group>
-        </sheet>
+
+          <group string="Lista de Materiales">
+            <button name="action_upload_bom" string="Subir" type="object" class="btn-primary"/>
+            <button name="action_download_bom" string="Descargar ZIP" type="object"/>
+          </group>
+
+          <group string="Instructivo de Fabricación">
+            <button name="action_upload_instruction" string="Subir" type="object" class="btn-primary"/>
+            <button name="action_download_instruction" string="Descargar ZIP" type="object"/>
+          </group>
+        </group>
       </form>
     </field>
   </record>
-
-  <!-- Vista tipo lista -->
-    <record id="view_product_file_list_test" model="ir.ui.view">
-      <field name="name">product.file.list</field>
-      <field name="model">product.file</field>
-      <field name="arch" type="xml">
-          <list string="Archivos de Producto">
-          <field name="product_id"/>
-          <field name="file_name"/>
-          <field name="file_path"/>
-        </list>
-      </field>
-    </record>
-
-  <!-- Acción -->
-  <record id="action_product_file_test" model="ir.actions.act_window">
-    <field name="name">Archivos de Producto</field>
-    <field name="res_model">product.file</field>
-    <field name="view_mode">list,form</field>
-  </record>
-
-  <!-- Menú bajo Fabricación -->
-  <menuitem 
-    id="menu_product_file_test" 
-    name=" Piloto Gestionar Archivos" 
-    parent="mrp.menu_mrp_root" 
-    action="action_product_file_test"
-    sequence="110"
-  />
 </odoo>

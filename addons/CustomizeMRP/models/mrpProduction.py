@@ -33,3 +33,16 @@ class MrpProduction(models.Model):
             'stage_id': stage.id
         }, cond=False)   
         return super(MrpProduction, self).button_mark_done()
+    
+    def action_open_design_module(self):
+        self.ensure_one()
+        design = self.env['product.file.design'].search([('production_id', '=', self.id)], limit=1)
+        if not design:
+            design = self.env['product.file.design'].create({'production_id': self.id})
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'product.file.design',
+            'view_mode': 'form',
+            'res_id': design.id,
+            'target': 'current',
+        }

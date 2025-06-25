@@ -38,8 +38,14 @@
                             <field name="description" nolabel="1" style="font-size: 20px;" />
                         </div>
                     </page>
-                </xpath>    
-                                                  
+                </xpath>
+                <!--Botón para ir al módulo de Diseño  -->
+                <xpath expr="//header" position="inside">
+                    <button name="action_open_design_module"
+                            string="Diseño Producto"
+                            type="object"
+                            class="btn-secondary"/>
+                </xpath>                 
             </field>
         </record>
     </data>

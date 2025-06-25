@@ -10,7 +10,6 @@
         'security/ir.model.access.csv',
         'views/custom_mrp_view.xml',
         'views/custom_mrp_list.xml',
-        'views/product_file_views.xml',
-        'views/download_view.xml'
+        'views/product_file_views.xml'
     ],
 }
