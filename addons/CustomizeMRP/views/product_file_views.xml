@@ -12,6 +12,7 @@
 
         <group>
           <group string="Corte (DXF)">
+            <field name="dxf_file" filename="dxf_filename"/>
             <button name="action_upload_dxf" string="Subir" type="object" class="btn-primary"/>
             <button name="action_download_dxf" string="Descargar ZIP" type="object"/>
           </group>

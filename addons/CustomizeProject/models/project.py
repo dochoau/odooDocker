@@ -257,6 +257,9 @@ class ProjectProject(models.Model):
                 elif stage_name == "Terminado" and  least_stage_name == "Terminado" :
                     status = "Terminado"
                     color = 7 
+                elif stage_name == "Proveedores" and  least_stage_name == "Terminado" :
+                    status = "Terminado"
+                    color = 7                     
                 elif stage_name == "Proveedores" and  least_stage_name in ("Por Fabricar", "Fabricando", "Proveedores") :
                     status = "Fabricando"
                     color = 11                         

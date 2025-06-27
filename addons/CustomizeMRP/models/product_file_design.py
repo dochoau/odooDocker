@@ -35,8 +35,10 @@ class ProductFile(models.Model):
     instruction_filename = fields.Char(string="Nombre archivo Instructivo")
 
     def _get_path(self):
-        return os.path.join(UPLOAD_DIR, self.project_id.name or '', self.product_id.name or '')
-
+        ruta = os.path.join(UPLOAD_DIR, self.project_id.name or '', self.production_id.name or '', self.product_id.name or '')
+        logger.info(ruta)    
+        return ruta
+    
     def action_upload_dxf(self):
         self._save_file('dxf', self.dxf_file, self.dxf_filename)
         self.dxf_loaded = True
@@ -55,10 +57,11 @@ class ProductFile(models.Model):
 
         path = self._get_path()
         os.makedirs(path, exist_ok=True)
+        logger.info(filedata)
 
-        file_path = os.path.join(path, f"{tipo}_{filename}")
-        with open(file_path, 'wb') as f:
-            f.write(base64.b64decode(filedata))
+        # file_path = os.path.join(path, f"{tipo}_{filename}")
+        # with open(file_path, 'wb') as f:
+        #     f.write(base64.b64decode(filedata))
 
     def action_download_dxf(self):
         return self._download_zip('dxf')
