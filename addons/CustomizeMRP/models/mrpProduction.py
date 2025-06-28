@@ -38,7 +38,11 @@ class MrpProduction(models.Model):
         self.ensure_one()
         design = self.env['product.file.design'].search([('production_id', '=', self.id)], limit=1)
         if not design:
-            design = self.env['product.file.design'].create({'production_id': self.id})
+            design = self.env['product.file.design'].create({
+                'production_id': self.id,
+                'project_id': self.project_id.id,
+                'product_id': self.product_id.id,
+            })
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'product.file.design',

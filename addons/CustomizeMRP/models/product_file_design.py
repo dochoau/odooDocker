@@ -52,16 +52,32 @@ class ProductFile(models.Model):
         self.instructions_loaded = True
 
     def _save_file(self, tipo, filedata, filename):
+
+        extension=''
+        if tipo=='dxf':
+            extension='.dxf'
+
         if not filedata or not filename:
             raise UserError("Debe cargar un archivo válido.")
 
         path = self._get_path()
         os.makedirs(path, exist_ok=True)
-        logger.info(filedata)
 
-        # file_path = os.path.join(path, f"{tipo}_{filename}")
-        # with open(file_path, 'wb') as f:
-        #     f.write(base64.b64decode(filedata))
+        zip_filename = filename + '.zip'
+        original_filename=filename+extension
+
+        file_path_zip = os.path.join(path, f"{tipo}_{zip_filename}")
+        file_path = os.path.join(path, f"{tipo}_{original_filename}")
+
+        with open(file_path, 'wb') as f:
+            f.write(base64.b64decode(filedata))
+
+        logger.info(file_path_zip)
+        logger.info(file_path)
+        logger.info(original_filename)
+        #Crear zip en memoria
+        with zipfile.ZipFile(file_path_zip, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            zipf.writestr(f"{tipo}_{original_filename}", base64.b64decode(filedata))
 
     def action_download_dxf(self):
         return self._download_zip('dxf')

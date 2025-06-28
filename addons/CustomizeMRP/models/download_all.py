@@ -68,27 +68,27 @@ class DownloadFirstFile(models.TransientModel):
 #     file_name = fields.Char(string='Nombre del archivo', required=True)
 #     file_path = fields.Char(string='Ruta en el sistema', readonly=True)
 
-#     @api.model
-#     def create(self, vals):
-#         binary_data = vals.pop('file_upload', False)
-#         original_filename = vals.get('file_name')
+    # @api.model
+    # def create(self, vals):
+    #     binary_data = vals.pop('file_upload', False)
+    #     original_filename = vals.get('file_name')
 
-#         if binary_data and original_filename:
-#             os.makedirs(UPLOAD_DIR, exist_ok=True)
+    #     if binary_data and original_filename:
+    #         os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-#             # Nombre del archivo zip
-#             base_name, _ = os.path.splitext(original_filename)
-#             zip_filename = base_name + '.zip'
-#             zip_path = os.path.join(UPLOAD_DIR, zip_filename)
+    #         Nombre del archivo zip
+    #         base_name, _ = os.path.splitext(original_filename)
+    #         zip_filename = base_name + '.zip'
+    #         zip_path = os.path.join(UPLOAD_DIR, zip_filename)
 
-#             # Crear zip en memoria
-#             with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-#                 zipf.writestr(original_filename, base64.b64decode(binary_data))
+    #         Crear zip en memoria
+    #         with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+    #             zipf.writestr(original_filename, base64.b64decode(binary_data))
 
-#             vals['file_path'] = zip_path
-#             vals['file_name'] = zip_filename  # Opcional: reemplaza nombre por el zip
+    #         vals['file_path'] = zip_path
+    #         vals['file_name'] = zip_filename  # Opcional: reemplaza nombre por el zip
 
-#         return super().create(vals)
+    #     return super().create(vals)
     
 #     # @api.model
 #     # def create(self, vals):

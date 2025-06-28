@@ -73,11 +73,11 @@ class SaleOrder(models.Model):
                         "description" : line.custom_description                })
                     
                     #Asociar el diseño a la orden de producción
-                    product_design = self.env["product.file.design"].create({
-                        "production_id": production_order.id,
-                        "project_id": self.project_id.id,
-                        "product_id": line.product_id.id,
-                       })
+                    # product_design = self.env["product.file.design"].create({
+                    #     "production_id": production_order.id,
+                    #     "project_id": self.project_id.id,
+                    #     "product_id": line.product_id.id,
+                    #    })
                     # Crear la tarea en el proyecto asociado
                     
                     task = self.env["project.task"].create({
