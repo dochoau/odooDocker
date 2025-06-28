@@ -26,32 +26,39 @@ class SaleOrderConfirmWizard(models.TransientModel):
         order = self.sale_order_id
 
         if order.project_id:
+            project_amount = order.amount_untaxed
+
             if self.opcion_iva == 'con':
-                if order.amount_total == order.amount_untaxed:
-                    project_amount = order.amount_untaxed * 1.19
-                else:
-                    project_amount = order.amount_total
+
+                project_untaxed = project_amount * 1.19
+
                 order.project_id.amount_total = project_amount
                 order.project_id.info_iva = "Proyecto con IVA"
+                order.project_id.amount_total_untaxed = project_untaxed
 
             elif self.opcion_iva == 'sin':
-                order.project_id.amount_total = order.amount_untaxed
+                order.project_id.amount_total = project_amount
+                order.project_id.amount_total_untaxed = project_amount
                 order.project_id.info_iva = "Proyecto sin IVA"
 
             elif self.opcion_iva == 'aiu':
                 # Validación extra por seguridad
                 if not self.valor_impuesto_aiu:
                     raise ValidationError("Debe ingresar el valor del impuesto AIU.")
-                order.project_id.amount_total = order.amount_untaxed * (1 + (self.valor_impuesto_aiu/100))
+                
+                project_untaxed = project_amount/(1 + (self.valor_impuesto_aiu/100))
+
+                order.project_id.amount_total = project_amount
+                order.project_id.amount_total_untaxed = project_untaxed
                 order.project_id.info_iva = f"Proyecto con AIU ({self.valor_impuesto_aiu :.2f}%)"
 
-            order.project_id.amount_due = order.project_id.amount_total
+            order.project_id.amount_due = project_amount
             order.project_id.commission = self.commission
-            order.project_id.commission_money = self.commission * order.amount_untaxed / 100
+            order.project_id.commission_money = self.commission * order.project_id.amount_total_untaxed / 100
             order.project_id.commission_due = order.project_id.commission_money
             order.project_id.supplier_debt = 0
             order.project_id.partner_id_v = self.partner_id_v
-            order.project_id.amount_total_untaxed = order.amount_untaxed
+            
 
         # Confirmar cotización
         order.action_confirm_original()
