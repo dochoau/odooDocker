@@ -56,6 +56,8 @@ class ProductFile(models.Model):
         extension=''
         if tipo=='dxf':
             extension='.dxf'
+        elif tipo=='bom'or tipo=='instruction':
+            extension='.pdf'
 
         if not filedata or not filename:
             raise UserError("Debe cargar un archivo válido.")
@@ -67,14 +69,11 @@ class ProductFile(models.Model):
         original_filename=filename+extension
 
         file_path_zip = os.path.join(path, f"{tipo}_{zip_filename}")
-        file_path = os.path.join(path, f"{tipo}_{original_filename}")
+        # file_path = os.path.join(path, f"{tipo}_{original_filename}")
 
-        with open(file_path, 'wb') as f:
-            f.write(base64.b64decode(filedata))
+        # with open(file_path, 'wb') as f:
+        #     f.write(base64.b64decode(filedata))
 
-        logger.info(file_path_zip)
-        logger.info(file_path)
-        logger.info(original_filename)
         #Crear zip en memoria
         with zipfile.ZipFile(file_path_zip, 'w', zipfile.ZIP_DEFLATED) as zipf:
             zipf.writestr(f"{tipo}_{original_filename}", base64.b64decode(filedata))
@@ -88,24 +87,35 @@ class ProductFile(models.Model):
     def action_download_instruction(self):
         return self._download_zip('instruction')
 
-    def _download_zip(self, tipo):
+    def _download_zip(self,tipo):
         path = self._get_path()
         archivos = [f for f in os.listdir(path) if f.startswith(tipo)]
         if not archivos:
-            raise UserError(f"No hay archivos disponibles para {tipo}.")
+            raise UserError("No hay archivos disponibles.")
 
-        zip_path = os.path.join(path, f"{tipo}.zip")
-        with zipfile.ZipFile(zip_path, 'w') as zipf:
-            for file in archivos:
-                zipf.write(os.path.join(path, file), arcname=file)
+        # Por ejemplo, descarga el primero
+        archivo = archivos[0]
+        full_path = os.path.join(path, archivo)
+        logger.info(full_path)
+    # Leer y codificar el archivo
+        with open(full_path, 'rb') as f:
+            file_content = f.read()
 
+        attachment = self.env['ir.attachment'].create({
+            'name': archivo,
+            'type': 'binary',
+            'datas': base64.b64encode(file_content),
+            'res_model': self._name,
+            'res_id': self.id,
+            'mimetype': 'application/dxf',  # o 'application/octet-stream'
+        })
+
+        # Descargar el archivo desde el attachment
         return {
             'type': 'ir.actions.act_url',
-            'url': f'/raiz/{self.project_name}/{self.product_name}/{tipo}.zip',
+            'url': f'/web/content/{attachment.id}?download=true',
             'target': 'new',
         }
-
-
 
   
 
