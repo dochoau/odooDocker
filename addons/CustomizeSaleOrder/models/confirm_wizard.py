@@ -26,11 +26,12 @@ class SaleOrderConfirmWizard(models.TransientModel):
         order = self.sale_order_id
 
         if order.project_id:
-            project_amount = order.amount_untaxed
+
+            project_amount = order.amount_total
 
             if self.opcion_iva == 'con':
 
-                project_untaxed = project_amount * 1.19
+                project_untaxed = project_amount / 1.19
 
                 order.project_id.amount_total = project_amount
                 order.project_id.info_iva = "Proyecto con IVA"

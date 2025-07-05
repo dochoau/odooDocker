@@ -28,12 +28,12 @@
 
           <group string="Lista de Materiales">
             <button name="action_upload_bom" string="Subir" type="object" class="btn-primary"/>
-            <button name="action_download_bom" string="Descargar ZIP" type="object"/>
+            <button name="action_download_bom" string="Descargar ZIP" type="object" class="btn-secondary" invisible="not bom_loaded"/>
           </group>
 
           <group string="Instructivo de Fabricación">
             <button name="action_upload_instruction" string="Subir" type="object" class="btn-primary"/>
-            <button name="action_download_instruction" string="Descargar ZIP" type="object"/>
+            <button name="action_download_instruction" string="Descargar ZIP" type="object" class="btn-secondary" invisible="not instructions_loaded"/>
           </group>
         </group>
       </form>
