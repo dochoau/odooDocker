@@ -95,8 +95,6 @@
 
               <strong>VIGENCIA:</strong> Esta cotización tendrá un plazo de (12) días calendario a partir del día siguiente a la emisión de esta
                 misma.<br/>
-              <strong>PAGO:</strong> Una vez aceptada la cotización, se requiere un anticipo del 50% del valor total cotizado para iniciar su
-                producción; el saldo restante se hará exigible el día que el proyecto se entregue en su totalidad.<br/>
               <strong>TIEMPOS DE ENTREGA:</strong>La empresa y el cliente deben acordar una fecha tentativa de entrega, pasados (20) días
                 de la fecha acordada de entrega y el cliente aun no recibe el proyecto; se facturará un costo diario por equipo de
                 $20.000 (COP) como concepto de bodega.<br/>
@@ -165,8 +163,85 @@
                           </t>
                       </tr>
                   </t>
-              </table>
+              </table>              
           </div>
+           <table style="border: 2px solid black; width: 100%; padding: 20px; font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5;">
+                <tr>
+                  <td>
+                    <h2 style="text-align: center; font-size: 18px; margin-bottom: 20px;">
+                      CONTRATO DE FABRICACIÓN DE EQUIPOS A MEDIDA
+                    </h2>
+
+                    <p>
+                      Entre <strong>Universo Gastronómico S.A.S.</strong>, sociedad comercial legalmente constituida bajo las leyes colombianas, identificada con NIT No. 901344210-5 , con domicilio en la ciudad de Medellín, en adelante "EL FABRICANTE", y por la otra parte, <strong><span t-esc="o.partner_id.name"/></strong>, identificado con documento número <strong><span t-esc="o.partner_id.vat"/></strong>, representado por: ______________________, con número de documento: _____________________, en adelante denominado “El Cliente”, se celebra el presente Contrato de fabricación y suministro de equipos a la medida, el cual se regirá por las siguientes cláusulas:
+                    </p>
+
+                    <h3 style="margin-top: 20px; font-size: 14px;">CLÁUSULA PRIMERA - OBJETO DEL CONTRATO</h3>
+                    <p>
+                      EL FABRICANTE se compromete a fabricar y suministrar a EL CLIENTE los equipos industriales detallados en la cotización emitida, la cual hace parte integral del presente contrato, bajo un proyecto específico que comprende el diseño, fabricación, y entrega de dichos equipos, conforme a los requerimientos definidos y aprobados por EL CLIENTE.
+                    </p>
+
+                    <h3 style="margin-top: 20px; font-size: 14px;">CLÁUSULA SEGUNDA - VINCULACIÓN DE LA COTIZACIÓN</h3>
+                    <p>
+                      La cotización aceptada por EL CLIENTE, por cualquier medio verificable (incluyendo medios digitales), se incorpora al presente contrato como anexo vinculante. EL CLIENTE declara conocer y aceptar íntegramente las condiciones comerciales, técnicos, logísticos y de garantía allí descritos, incluyendo sus exclusiones.
+                    </p>
+
+                    <h3 style="margin-top: 20px; font-size: 14px;">CLÁUSULA TERCERA - FORMA DE PAGO</h3>
+                    <p>
+                      Para dar inicio a la fabricación de los equipos objeto del proyecto.
+                    </p>
+                    <ul style="margin-left: 20px;">
+                      <li>
+                         EL CLIENTE deberá realizar un anticipo del cincuenta por ciento (50%) del valor total cotizado, excepto para el sistema de extracción.
+                      </li>
+                      <li>
+                        El sistema de extracción deberá ser pagado en su totalidad (100%) de forma anticipada, antes de su fabricación e instalación.
+                      </li>
+                      <li>
+                        El saldo restante del proyecto, equivalente al cincuenta por ciento (50%), deberá ser cancelado antes de la entrega completa de los equipos.
+                      </li>
+                      <li>
+                        En ningún caso se realizará la entrega o instalación de los equipos si no se encuentra cancelado el total correspondiente según las condiciones aquí descritas.
+                      </li>
+                    </ul>
+
+                    <h3 style="margin-top: 20px; font-size: 14px;">CLÁUSULA CUARTA - EJECUCIÓN Y ENTREGA</h3>
+                    <p>
+                      La fecha de entrega será acordada entre las partes una vez se haya recibido el anticipo correspondiente. La entrega está sujeta a los tiempos de producción indicados en la cotización, los cuales EL CLIENTE declara conocer.
+                    </p>
+
+                    <h3 style="margin-top: 20px; font-size: 14px;">CLÁUSULA QUINTA - GARANTÍA Y EXCLUSIONES</h3>
+                    <p>
+                      La garantía de los equipos fabricados se regirá por las condiciones detalladas en la cotización aceptada, incluyendo coberturas, plazos, exclusiones, y requisitos para su aplicación. EL CLIENTE declara entender y aceptar que dichas condiciones son parte esencial de este contrato.
+                    </p>
+
+                    <h3 style="margin-top: 20px; font-size: 14px;">CLÁUSULA SEXTA - ACEPTACIÓN</h3>
+                    <p>
+                      Con la aceptación de la cotización y el cumplimiento de las condiciones de pago descritas, se entiende perfeccionado el presente contrato, sin necesidad de suscripción física adicional.
+                    </p>
+
+                    <br/><br/>
+                    <table style="width: 100%; margin-top: 30px; font-size: 12px;">
+                      <tr>
+                        <td style="width: 50%; vertical-align: top;">
+                          <strong>Universo Gastronómico S.A.S.</strong><br/>
+                          <strong>Representante Legal: Harol Yecid Quiroz </strong> <br/>
+                          Firma: ___________________________
+                          <br/>
+                          <br/>
+                        </td>
+                        <td style="width: 50%; vertical-align: top;">
+                          <strong>Representante  <span t-esc="o.partner_id.name"/></strong><br/>
+                          Firma: ___________________________<br/>
+                          Documento:
+                          <br/>
+                          <br/> 
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
 
             </div>
         </t>

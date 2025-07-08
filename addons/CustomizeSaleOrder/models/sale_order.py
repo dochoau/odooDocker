@@ -1,8 +1,8 @@
 from odoo import models, fields, api, exceptions
 import logging
 
-
 logger = logging.getLogger(__name__)
+UPLOAD_DIR = '/mnt/odoo-product-files' 
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
@@ -12,6 +12,10 @@ class SaleOrder(models.Model):
         string="Órdenes de Producción Creadas", 
         default=False
     )
+    # Campos para cargar desde la interfaz
+    plano_file = fields.Binary(string="Archivo DXF")
+    plano_filename = fields.Char(string="Nombre archivo DXF")
+    plano_loaded = fields.Boolean(string="DXF cargado", default=False)
 
     @api.model_create_multi
     def create(self, vals):

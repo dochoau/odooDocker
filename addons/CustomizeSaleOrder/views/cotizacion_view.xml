@@ -22,6 +22,9 @@
             <xpath expr="//header/button[@name='action_quotation_send']" position="after">
                 <button name="action_ver_reporte_html" type="object" string="Generar Cotización" class="btn-secondary"/>
             </xpath>
+            <!-- <xpath expr="//header/button[@name='action_quotation_send']" position="after">
+                <button name="action_cargar_plano" type="object" string="Cargar Plano" class="btn-secondary"/>
+            </xpath> -->
             <xpath expr="//field[@name='order_line']/list//field[@name='product_template_id']" position="after">
                 <field name="custom_description"/>
             </xpath>

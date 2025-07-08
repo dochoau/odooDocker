@@ -6,6 +6,7 @@ from odoo import models, fields, api
 import logging
 from odoo.exceptions import UserError
 
+
 logger = logging.getLogger(__name__)
 
 # Ruta donde se guardarán los archivos dentro del contenedor
