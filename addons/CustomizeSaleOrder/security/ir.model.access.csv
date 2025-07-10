@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id,perm_read,perm_write,perm_create,perm_unlink
 access_sale_order_confirm_wizard,sale.order.confirm.wizard,model_sale_order_confirm_wizard,,1,1,1,1
+access_project_plan_wizard_user,access.project.plan.upload.wizard.user,model_project_plan_upload_wizard,,1,1,1,0
+access_project_contract_wizard_user,access.project.contract.upload.wizard.user,model_project_contract_upload_wizard,,1,1,1,0

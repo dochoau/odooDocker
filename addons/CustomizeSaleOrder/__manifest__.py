@@ -7,6 +7,8 @@
     "data": [
         "views/cotizacion_view.xml",
         "views/confirm_wizard.xml",
+        "views/project_plan_upload_wizard.xml",
+        "views/project_contract_upload_wizard.xml",
         "reports/report_saleorder_template.xml",
         "reports/reports_f.xml",
         "reports/report_sale_order_html.xml",

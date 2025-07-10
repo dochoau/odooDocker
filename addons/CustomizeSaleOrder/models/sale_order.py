@@ -134,3 +134,31 @@ class SaleOrder(models.Model):
     def action_confirm_original(self):
         """Método original de confirmación (guardado para ser llamado desde el wizard)"""
         return super(SaleOrder, self).action_confirm()
+
+    # En el modelo donde esté el botón
+    def action_cargar_plano(self):
+        self.ensure_one()
+        return {
+            'name': 'Cargar Plano del Proyecto',
+            'type': 'ir.actions.act_window',
+            'res_model': 'project.plan.upload.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_project_id': self.project_id.id if self.project_id else False,
+            }
+        }
+
+    # En el modelo donde esté el botón
+    def action_cargar_contrato(self):
+        self.ensure_one()
+        return {
+            'name': 'Cargar Contrato del Proyecto',
+            'type': 'ir.actions.act_window',
+            'res_model': 'project.contract.upload.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_project_id': self.project_id.id if self.project_id else False,
+            }
+        }    

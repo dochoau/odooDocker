@@ -1,1 +1,1 @@
-from . import sale_order, saler_order_line, confirm_wizard
+from . import sale_order, saler_order_line, confirm_wizard, project_plan_upload_wizard, project_contract_upload_wizard
