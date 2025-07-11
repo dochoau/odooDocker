@@ -44,4 +44,6 @@ class ProjectcontractUploadWizard(models.TransientModel):
         with zipfile.ZipFile(file_path_zip, 'w', zipfile.ZIP_DEFLATED) as zipf:
             zipf.writestr(original_filename, base64.b64decode(self.pdf_file))
 
+        self.project_id.plano_loaded = True
+
         return {'type': 'ir.actions.act_window_close'}

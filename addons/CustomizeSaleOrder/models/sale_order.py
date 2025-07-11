@@ -71,6 +71,7 @@ class SaleOrder(models.Model):
                 else:
                     production_order = self.env["mrp.production"].create({
                         "product_id": line.product_id.id,
+                        "project_id": self.project_id.id,
                         "product_qty": 1,
                         "sale_order_id": self.id,
                         "origin" : project_name,

@@ -1,7 +1,13 @@
 from odoo import models, fields, api, exceptions
+import os
+from odoo.exceptions import UserError
+import base64
+
+
 import logging
 
 logger = logging.getLogger(__name__)
+UPLOAD_DIR = '/mnt/odoo-product-files'  # RUTA base
                            
 class MrpProduction(models.Model):
     _inherit = "mrp.production"
@@ -49,4 +55,36 @@ class MrpProduction(models.Model):
             'view_mode': 'form',
             'res_id': design.id,
             'target': 'current',
+        }
+    
+    def action_open_plano(self):
+        path = os.path.join(UPLOAD_DIR, self.project_id.name or '', 'plano')
+        logger.info(path)
+        archivos = [f for f in os.listdir(path) if f.startswith("Plano")]
+         # Por ejemplo, descarga el primero
+        archivo = archivos[0]
+        full_path = os.path.join(path, archivo)
+        logger.info(full_path)
+        if not archivos:
+            raise UserError("No hay archivos disponibles.")
+
+
+    # Leer y codificar el archivo
+        with open(full_path, 'rb') as f:
+            file_content = f.read()
+
+        attachment = self.env['ir.attachment'].create({
+            'name': archivo,
+            'type': 'binary',
+            'datas': base64.b64encode(file_content),
+            'res_model': self._name,
+            'res_id': self.id,
+            'mimetype': 'application/pdf',  # o 'application/octet-stream'
+        })
+
+        # Descargar el archivo desde el attachment
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f'/web/content/{attachment.id}?download=true',
+            'target': 'new',
         }
