@@ -246,37 +246,37 @@ class ProjectProject(models.Model):
                 #Color por defecto
                 color = 9
                 if stage_name == "Cotizar":
-                    status = "Cotizando"
+                    status = "01-Cotizando"
                     color = 8
                 elif stage_name == "Por Fabricar":
-                    status = "Por Fabricar"
+                    status = "02-Por Fabricar"
                     color = 1                    
                 elif stage_name == "Fabricando"  :
-                    status = "Fabricando"
+                    status = "03-Fabricando"
                     color = 3                           
                 elif stage_name == "Terminado" and  least_stage_name != "Terminado" :
-                    status = "Fabricando"
+                    status = "03-Fabricando"
                     color = 3                        
                 elif stage_name == "Terminado" and  least_stage_name == "Terminado" :
-                    status = "Terminado"
+                    status = "04-Terminado"
                     color = 7 
                 elif stage_name == "Proveedores" and  least_stage_name == "Terminado" :
-                    status = "Terminado"
+                    status = "04-Terminado"
                     color = 7                     
                 elif stage_name == "Proveedores" and  least_stage_name in ("Por Fabricar", "Fabricando", "Proveedores") :
-                    status = "Fabricando"
+                    status = "03-Fabricando"
                     color = 11                         
                 elif stage_name == "Instalación" and  least_stage_name in ("Por Fabricar", "Fabricando", "Proveedores") :
-                    status = "Instalando-Fabricando"
+                    status = "05-Instalando-Fabricando"
                     color = 11    
                 elif stage_name == "Instalación" and  least_stage_name in ("Instalación", "Terminado") :
-                    status = "Instalando"
+                    status = "06-Instalando"
                     color = 11    
                 elif stage_name == "Entregado" and least_stage_name != "Entregado":
-                    status = "Entregando"
+                    status = "07-Entregando"
                     color = 11    
                 elif least_stage_name == "Entregado":
-                    status = "Proyecto Entregado Completamente"
+                    status = "08-Proyecto Entregado Completamente"
                     color = 10
 
                 project.write({
@@ -305,7 +305,7 @@ class ProjectProject(models.Model):
                 record.commission_due == 0 and
                 record.supplier_debt == 0 and
                 record.amount_due == 0 and
-                record.last_stage == "Proyecto Entregado Completamente"
+                record.last_stage == "08-Proyecto Entregado Completamente"
             ):
                 record.estado_final = "Finalizado"
             else:
