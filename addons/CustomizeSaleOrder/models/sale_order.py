@@ -44,6 +44,10 @@ class SaleOrder(models.Model):
         """ Crea órdenes de producción y tareas en el proyecto asignado """
         if self.state == 'draft':
             raise exceptions.UserError(("Primero Confirma la Cotización"))
+        
+        if not self.project_id.contrato_loaded:
+            raise exceptions.UserError(("No se ha Cargado el Contrato Firmado"))
+        
         stage = self.env["project.task.type"].search([("name", "=", "Por Fabricar")], limit=1)
         stage_prov = self.env["project.task.type"].search([("name", "=", "Proveedores")], limit=1)
 

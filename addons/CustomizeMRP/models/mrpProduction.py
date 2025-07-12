@@ -58,6 +58,10 @@ class MrpProduction(models.Model):
         }
     
     def action_open_plano(self):
+
+        if not self.project_id.plano_loaded:
+            raise UserError("No hay ningún plano cargado")
+        
         path = os.path.join(UPLOAD_DIR, self.project_id.name or '', 'plano')
         logger.info(path)
         archivos = [f for f in os.listdir(path) if f.startswith("Plano")]

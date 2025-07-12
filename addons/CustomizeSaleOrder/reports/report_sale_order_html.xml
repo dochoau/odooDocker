@@ -128,7 +128,7 @@
                   <li>Trabajos de obra civil como demolición, acabados de paredes o pintura, impermeabilización en techos.</li>
                   <li>Ningún mueble incluye accesorios de plomería y/o grifería.</li> 
                   <li>Ningún equipo incluye insumos de conexión a gas (mangueras, reguladores u otros).</li>
-                  <li>Ningún tipo de accesorio como azafates, canasta de freídoras entre otros .</li> <br/>
+                  <li>Ningún tipo de equipo incluye azafates.</li> <br/>
                 </ul>
                 Esperamos que esta cotización sea de su agrado y su pronta comunicación, cualquier inquietud o sugerencia no dude en ponerse en contacto
             </div>
@@ -193,10 +193,10 @@
                     </p>
                     <ul style="margin-left: 20px;">
                       <li>
-                         EL CLIENTE deberá realizar un anticipo del cincuenta por ciento (50%) del valor total cotizado, excepto para el sistema de extracción.
+                         EL CLIENTE deberá realizar un anticipo del cincuenta por ciento (50%) del valor total cotizado.
                       </li>
                       <li>
-                        El sistema de extracción deberá ser pagado en su totalidad (100%) de forma anticipada, antes de su fabricación e instalación.
+                        La instalación del sistema de extracción se incluye en el pago inicial del cincuenta por ciento (50%).
                       </li>
                       <li>
                         El saldo restante del proyecto, equivalente al cincuenta por ciento (50%), deberá ser cancelado antes de la entrega completa de los equipos.
@@ -227,7 +227,11 @@
                         <td style="width: 50%; vertical-align: top;">
                           <strong>Universo Gastronómico S.A.S.</strong><br/>
                           <strong>Representante Legal: Harol Yecid Quiroz </strong> <br/>
-                          Firma: ___________________________
+                          Firma:  
+                            <span style="display: inline-block; vertical-align: middle;">
+                                <img t-att-src="'/CustomizeSaleOrder/static/src/img/firma_harol.png'"
+                                    style="width: 120px; height: auto; margin-left: 10px;" alt="firma"/>
+                          </span>
                           <br/>
                           <br/>
                         </td>

@@ -49,6 +49,7 @@ class ProjectProject(models.Model):
     dashboard_id = fields.Many2one('project.dashboard.cartera', string='Dashboard')
 
     plano_loaded = fields.Boolean(string="Plano cargado", default=False)
+    contrato_loaded = fields.Boolean(string="Contrato cargado", default=False)
 
     #Generar el valor de la deuda
     @api.depends('amount_total', 'payment_ids.amount')
