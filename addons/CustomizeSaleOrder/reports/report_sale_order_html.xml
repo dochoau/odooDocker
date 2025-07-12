@@ -20,9 +20,10 @@
                   <strong style="font-size: 16px;">UNIVERSO GASTRONOMICO S.A.S</strong><br/>
                   <strong>NIT:</strong> 901344210-5<br/>
                   <strong>COTIZACIÓN</strong><br/>
-                  <strong>FECHA:</strong> <span t-esc="o.date_order.strftime('%d DE %B DE %Y')"></span><br/>
+                  <strong>FECHA:</strong> <span t-esc="o.date_order.strftime('%d del %m del %Y')"></span><br/>
                   <strong>SEÑORES:</strong> <span t-esc="o.partner_id.name"></span><br/>
                   <strong>PROYECTO:</strong> <span t-esc="o.project_id.name or ''"></span><br/>
+                  <strong>COTIZACIÓN:</strong> <span t-esc="o.name or ''"></span><br/>
                 </td>
                 
                 <!-- Columna derecha: logo alineado a la derecha -->
@@ -179,12 +180,12 @@
 
                     <h3 style="margin-top: 20px; font-size: 14px;">CLÁUSULA PRIMERA - OBJETO DEL CONTRATO</h3>
                     <p>
-                      EL FABRICANTE se compromete a fabricar y suministrar a EL CLIENTE los equipos industriales detallados en la cotización emitida, la cual hace parte integral del presente contrato, bajo un proyecto específico que comprende el diseño, fabricación, y entrega de dichos equipos, conforme a los requerimientos definidos y aprobados por EL CLIENTE.
+                      EL FABRICANTE se compromete a fabricar y suministrar a EL CLIENTE los equipos industriales detallados en la cotización número <strong><span t-esc="o.name"></span></strong> emitida, la cual hace parte integral del presente contrato, bajo un proyecto específico que comprende el diseño, fabricación, y entrega de dichos equipos, conforme a los requerimientos definidos y aprobados por EL CLIENTE.
                     </p>
 
                     <h3 style="margin-top: 20px; font-size: 14px;">CLÁUSULA SEGUNDA - VINCULACIÓN DE LA COTIZACIÓN</h3>
                     <p>
-                      La cotización aceptada por EL CLIENTE, por cualquier medio verificable (incluyendo medios digitales), se incorpora al presente contrato como anexo vinculante. EL CLIENTE declara conocer y aceptar íntegramente las condiciones comerciales, técnicas, logísticas y de garantía allí descritos, incluyendo sus exclusiones.
+                      La cotización número <strong><span t-esc="o.name"></span></strong> aceptada por EL CLIENTE, por cualquier medio verificable (incluyendo medios digitales), se incorpora al presente contrato como anexo vinculante. EL CLIENTE declara conocer y aceptar íntegramente las condiciones comerciales, técnicas, logísticas y de garantía allí descritos, incluyendo sus exclusiones.
                     </p>
 
                     <h3 style="margin-top: 20px; font-size: 14px;">CLÁUSULA TERCERA - FORMA DE PAGO</h3>
