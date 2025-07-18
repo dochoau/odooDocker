@@ -33,19 +33,27 @@
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//notebook/page[1]" position="before">
-                    <page string="Descripción Detallada" active = "1">
+                    <page string="Descripción Detallada" active="1">
+                        <!-- Sección: Descripción del producto -->
+                        <div class="oe_structure" style="margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+                            <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Descripción del producto</h4>
+                            <field name="description" style="font-size: 16px;" />
+                        </div>
+
+                        <!-- Sección: Especificaciones -->
                         <div class="oe_structure">
-                            <field name="description" nolabel="1" style="font-size: 20px;" />
+                            <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Medidas</h4>
+                            <field name="dimensiones" style="font-size: 16px;" />
                         </div>
                     </page>
                 </xpath>
                 <!--Botón para ir al módulo de Diseño  -->
-                <xpath expr="//header" position="inside">
+                <!-- <xpath expr="//header" position="inside">
                     <button name="action_open_design_module"
                             string="Diseño Producto"
                             type="object"
                             class="btn-secondary"/>
-                </xpath>
+                </xpath> -->
                 <!--Botón para ir al plano del proyecto  -->
                 <xpath expr="//header" position="inside">
                     <button name="action_open_plano"

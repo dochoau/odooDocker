@@ -16,6 +16,7 @@ class MrpProduction(models.Model):
     task_id = fields.Many2one('project.task', string="Tarea Relacionada")
     employee_id = fields.Many2one('hr.employee', string='Fabricante')
     description = fields.Text(string="Descripción del producto")
+    dimensiones = fields.Char(string="Medidas")
 
     def action_start(self):
         if not self.employee_id :

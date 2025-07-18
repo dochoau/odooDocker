@@ -79,7 +79,8 @@ class SaleOrder(models.Model):
                         "product_qty": 1,
                         "sale_order_id": self.id,
                         "origin" : project_name,
-                        "description" : line.custom_description                })
+                        "description" : line.custom_description,
+                        "dimensiones":line.dimensiones                })
                     
                     #Asociar el diseño a la orden de producción
                     # product_design = self.env["product.file.design"].create({
