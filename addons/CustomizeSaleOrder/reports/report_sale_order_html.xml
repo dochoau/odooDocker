@@ -59,8 +59,15 @@
                     <div style="font-weight: bold; text-transform: uppercase;">
                       <t t-esc="line.name"/>
                     </div>
-                    <div><strong>Cantidad:</strong> <t t-esc="line.product_uom_qty"/> unidades</div>
-                    <div t-if="line.custom_description" t-raw="line.custom_description"></div>
+                    <div>
+                      <strong>Cantidad:</strong> <t t-esc="line.product_uom_qty"/> unidades
+                    </div>
+                    <div t-if="line.custom_description">
+                        <strong>Descripción:</strong> <t t-raw="line.custom_description"/>
+                    </div>
+                    <div t-if="line.dimensiones">
+                        <strong>Medidas:</strong><t t-raw="line.dimensiones"/>
+                    </div>                    
                     <div style="margin-top: 10px; font-size: 15px;"><em>Imagen ilustrativa**</em></div>
                   </td>
 
