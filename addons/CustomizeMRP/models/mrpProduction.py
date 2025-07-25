@@ -2,6 +2,7 @@ from odoo import models, fields, api, exceptions
 import os
 from odoo.exceptions import UserError
 import base64
+from datetime import datetime
 
 
 import logging
@@ -17,6 +18,7 @@ class MrpProduction(models.Model):
     employee_id = fields.Many2one('hr.employee', string='Fabricante')
     description = fields.Text(string="Descripción del producto")
     dimensiones = fields.Char(string="Medidas")
+    date_start_per = fields.Datetime(string="Último Timestamp")
 
     def action_start(self):
         if not self.employee_id :
@@ -28,6 +30,7 @@ class MrpProduction(models.Model):
             'stage_id': stage.id,
             'name':u_task_name
         }, cond=False)
+        self.date_start_per = fields.Datetime.now()
         return super(MrpProduction, self).action_start()
 
 
