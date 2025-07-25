@@ -27,9 +27,9 @@ class ProjectDashboardCartera(models.Model):
                 stage = proj.last_stage
                 if stage in ('01-Cotizando', '02-Por Fabricar'):
                     cotizando_fabricar += proj.amount_due or 0.0
-                if stage in ('03-Fabricando','06-Instalando','04-Terminado', 'I05-Instalando-Fabricando', '07-Entregando' ):
+                if stage in ('03-Fabricando','06-Instalando','04-Terminado', '05-Instalando-Fabricando', '07-Entregando' ):
                     en_proceso += proj.amount_due or 0.0
-                if stage == '8-Proyecto Entregado Completamente':
+                if stage == '08-Proyecto Entregado Completamente':
                     terminado += proj.amount_due or 0.0
 
             record.total_general = total
