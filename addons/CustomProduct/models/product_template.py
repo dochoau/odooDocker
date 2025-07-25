@@ -13,7 +13,8 @@ class ProductTemplate(models.Model):
             ('frio', 'Frío'),
             ('coccion', 'Cocción'),
             ('extraccion', 'Extracción'),
-            ('carpinteria', 'Carpintería')
+            ('carpinteria', 'Carpintería'),
+            ('log', 'Logística e Instalación')
         ],
         string='Tipo de Producto',
         required=True,
