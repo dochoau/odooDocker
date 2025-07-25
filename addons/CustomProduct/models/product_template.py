@@ -8,6 +8,17 @@ class ProductTemplate(models.Model):
 
     image_catalog_ids = fields.One2many('product.image.catalog', 'product_tmpl_id', string="Catálogo de Imágenes")
     producto_tercerizado = fields.Boolean(string='Producto tercerizado')
+    tipo_proceso = fields.Selection(
+        selection=[
+            ('frio', 'Frío'),
+            ('coccion', 'Cocción'),
+            ('extraccion', 'Extracción'),
+            ('carpinteria', 'Carpintería')
+        ],
+        string='Tipo de Producto',
+        required=True,
+        default='carpinteria'
+)
 
     @api.model
     def default_get(self, fields_list):

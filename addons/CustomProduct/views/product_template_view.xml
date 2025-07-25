@@ -8,6 +8,7 @@
             <xpath expr="//sheet/notebook" position="before">
                 <group string="Fabricación">
                     <field name="producto_tercerizado" string="¿Producto tercerizado?"/>
+                    <field name="tipo_proceso"/>
                 </group>
             </xpath>
             <xpath expr="//notebook" position="inside">
