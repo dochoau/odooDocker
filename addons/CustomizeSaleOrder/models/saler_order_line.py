@@ -9,7 +9,9 @@ logger = logging.getLogger(__name__)
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    dimensiones = fields.Char(string="Medidas")
+    frente = fields.Char(string="Frente")
+    fondo = fields.Char(string="Fondo")
+    altura = fields.Char(string="Altura")
 
     custom_description = fields.Text(
         string="Descripción del producto",

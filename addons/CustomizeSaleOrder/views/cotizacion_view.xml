@@ -45,9 +45,15 @@
             </xpath>    
             <xpath expr="//button[@name='action_quotation_send']" position="attributes">
                 <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="after">
+                <field name="altura"/>
             </xpath> 
             <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="after">
-                <field name="dimensiones"/>
+                <field name="fondo"/>
+            </xpath>                           
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="after">
+                <field name="frente"/>
             </xpath>
         </field>
     </record>

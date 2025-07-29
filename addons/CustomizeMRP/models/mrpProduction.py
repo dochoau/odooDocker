@@ -17,7 +17,9 @@ class MrpProduction(models.Model):
     task_id = fields.Many2one('project.task', string="Tarea Relacionada")
     employee_id = fields.Many2one('hr.employee', string='Fabricante')
     description = fields.Text(string="Descripción del producto")
-    dimensiones = fields.Char(string="Medidas")
+    frente = fields.Char(string="Frente")
+    fondo = fields.Char(string="Fondo")
+    altura = fields.Char(string="Altura")
     date_start_per = fields.Datetime(string="Último Timestamp")
 
     def action_start(self):

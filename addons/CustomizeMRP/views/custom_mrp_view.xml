@@ -42,8 +42,13 @@
 
                         <!-- Sección: Especificaciones -->
                         <div class="oe_structure">
-                            <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Medidas</h4>
-                            <field name="dimensiones" style="font-size: 16px;" />
+                            <h3 style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Medidas</h3>
+                            <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Frente</h4>
+                            <field name="frente" style="font-size: 16px;" />
+                            <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Fondo</h4>
+                            <field name="fondo" style="font-size: 16px;" />
+                            <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Altura</h4>
+                            <field name="altura" style="font-size: 16px;" />
                         </div>
                     </page>
                 </xpath>

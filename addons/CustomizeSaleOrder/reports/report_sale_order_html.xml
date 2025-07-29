@@ -66,7 +66,7 @@
                         <strong>Descripción:</strong> <t t-raw="line.custom_description"/>
                     </div>
                     <div t-if="line.dimensiones">
-                        <strong>Medidas:</strong><t t-raw="line.dimensiones"/>
+                        <strong>Medidas:</strong><t t-raw="line.frente"/>X<t t-raw="line.fondo"/>X<t t-raw="line.altura"/>
                     </div>                    
                     <div style="margin-top: 10px; font-size: 15px;"><em>Imagen ilustrativa**</em></div>
                   </td>
