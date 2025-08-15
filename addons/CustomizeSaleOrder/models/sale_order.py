@@ -82,7 +82,8 @@ class SaleOrder(models.Model):
                         "description" : line.custom_description,
                         "frente":line.frente,
                         "fondo":line.fondo,
-                        "altura":line.altura
+                        "altura":line.altura,
+                        "sale_line_id":line.id
                         })
                     
                     #Asociar el diseño a la orden de producción

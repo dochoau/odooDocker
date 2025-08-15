@@ -21,6 +21,7 @@ class MrpProduction(models.Model):
     fondo = fields.Char(string="Fondo")
     altura = fields.Char(string="Altura")
     date_start_per = fields.Datetime(string="Último Timestamp")
+    sale_line_id = fields.Many2one('sale.order.line', string='Línea de Venta', ondelete='set null' )
 
     def action_start(self):
         if not self.employee_id :
