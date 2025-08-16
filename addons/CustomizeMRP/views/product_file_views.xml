@@ -17,23 +17,38 @@
                     string="Subir"
                     type="object"
                     class="btn-primary"
-                    />
-                    
+                    />                 
             <button name="action_download_dxf"
-                    string="Descargar ZIP"
+                    string="Descargar"
                     type="object"
                     class="btn-secondary"
                     invisible="not dxf_loaded"/>
           </group>
 
           <group string="Lista de Materiales">
-            <button name="action_upload_bom" string="Subir" type="object" class="btn-primary"/>
-            <button name="action_download_bom" string="Descargar ZIP" type="object" class="btn-secondary" invisible="not bom_loaded"/>
+            <field name="bom_file" filename="bom_filename"/>
+            <button name="action_upload_bom" 
+                    string="Subir" 
+                    type="object" 
+                    class="btn-primary"/>
+            <button name="action_download_bom" 
+                    string="Descargar ZIP" 
+                    type="object" 
+                    class="btn-secondary" 
+                    invisible="not bom_loaded"/>
           </group>
 
           <group string="Instructivo de Fabricación">
-            <button name="action_upload_instruction" string="Subir" type="object" class="btn-primary"/>
-            <button name="action_download_instruction" string="Descargar ZIP" type="object" class="btn-secondary" invisible="not instructions_loaded"/>
+            <field name="instruction_file" filename="instruction_filename"/>
+            <button name="action_upload_instruction" 
+                    string="Subir" 
+                    type="object" 
+                    class="btn-primary"/>
+            <button name="action_download_instruction" 
+                    string="Descargar ZIP" 
+                    type="object" 
+                    class="btn-secondary" 
+                    invisible="not instructions_loaded"/>
           </group>
         </group>
       </form>

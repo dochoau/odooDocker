@@ -5,6 +5,7 @@ import io
 from odoo import models, fields, api
 import logging
 from odoo.exceptions import UserError
+import fnmatch
 
 
 logger = logging.getLogger(__name__)
@@ -53,31 +54,14 @@ class ProductFile(models.Model):
         self.instructions_loaded = True
 
     def _save_file(self, tipo, filedata, filename):
-
-        extension=''
-        if tipo=='dxf':
-            extension='.dxf'
-        elif tipo=='bom'or tipo=='instruction':
-            extension='.pdf'
-
-        if not filedata or not filename:
-            raise UserError("Debe cargar un archivo válido.")
-
+        orden_pdc = self.production_id.name.replace("/", "_")
         path = self._get_path()
         os.makedirs(path, exist_ok=True)
-
-        zip_filename = filename + '.zip'
-        original_filename=filename+extension
-
-        file_path_zip = os.path.join(path, f"{tipo}_{zip_filename}")
-        # file_path = os.path.join(path, f"{tipo}_{original_filename}")
-
-        # with open(file_path, 'wb') as f:
-        #     f.write(base64.b64decode(filedata))
-
-        #Crear zip en memoria
-        with zipfile.ZipFile(file_path_zip, 'w', zipfile.ZIP_DEFLATED) as zipf:
-            zipf.writestr(f"{tipo}_{original_filename}", base64.b64decode(filedata))
+        file_content = base64.b64decode(filedata)
+        file_path = os.path.join(path, f"{orden_pdc}_{tipo}_{filename}")
+        # Escribir en disco
+        with open(file_path, "wb") as f:
+            f.write(file_content)
 
     def action_download_dxf(self):
         return self._download_zip('dxf')
@@ -89,35 +73,48 @@ class ProductFile(models.Model):
         return self._download_zip('instruction')
 
     def _download_zip(self,tipo):
+        """Buscar archivo por patrón {orden_pdc}_{tipo}_* en la misma ruta y descargarlo"""
+        self.ensure_one()
+        orden_pdc = self.production_id.name.replace("/", "_")
         path = self._get_path()
-        archivos = [f for f in os.listdir(path) if f.startswith(tipo)]
-        if not archivos:
-            raise UserError("No hay archivos disponibles.")
 
-        # Por ejemplo, descarga el primero
-        archivo = archivos[0]
-        full_path = os.path.join(path, archivo)
-        logger.info(full_path)
-    # Leer y codificar el archivo
-        with open(full_path, 'rb') as f:
+        # Construir patrón de búsqueda
+        pattern = f"{orden_pdc}_{tipo}_*"
+
+        # Buscar el archivo en la carpeta
+        file_path = None
+        for fname in os.listdir(path):
+            if fnmatch.fnmatch(fname, pattern):
+                file_path = os.path.join(path, fname)
+                break
+
+        if not file_path or not os.path.exists(file_path):
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {
+                    "title": "No encontrado",
+                    "message": f"No se encontró ningún archivo con patrón {pattern}",
+                    "sticky": False,
+                },
+            }
+
+        # Leer archivo y crear attachment temporal
+        with open(file_path, "rb") as f:
             file_content = f.read()
 
-        attachment = self.env['ir.attachment'].create({
-            'name': archivo,
-            'type': 'binary',
-            'datas': base64.b64encode(file_content),
-            'res_model': self._name,
-            'res_id': self.id,
-            'mimetype': 'application/dxf',  # o 'application/octet-stream'
+        attachment = self.env["ir.attachment"].create({
+            "name": os.path.basename(file_path),
+            "datas": base64.b64encode(file_content),
+            "res_model": self._name,
+            "res_id": self.id,
+            "type": "binary",
         })
 
-        # Descargar el archivo desde el attachment
         return {
-            'type': 'ir.actions.act_url',
-            'url': f'/web/content/{attachment.id}?download=true',
-            'target': 'new',
+            "type": "ir.actions.act_url",
+            "url": f"/web/content/{attachment.id}?download=true",
+            "target": "self",
         }
-
-  
 
 
