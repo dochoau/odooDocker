@@ -302,14 +302,14 @@ class ProjectProject(models.Model):
     def _compute_estado_final(self):
         for record in self:
             if (
-                record.commission_due == 0 and
-                record.supplier_debt == 0 and
-                record.amount_due == 0 and
+                record.commission_due < 1 and
+                record.supplier_debt < 1 and
+                record.amount_due < 1 and
                 record.last_stage == "08-Proyecto Entregado Completamente"
             ):
                 record.estado_final = "Finalizado"
             else:
                 record.estado_final = ""
 
-            if record.supplier_debt <= 0 and record.dashboard_debt_id and record.estado_final == "Finalizado":
+            if record.supplier_debt <= 1 and record.dashboard_debt_id and record.estado_final == "Finalizado":
                 record.dashboard_debt_id = False
