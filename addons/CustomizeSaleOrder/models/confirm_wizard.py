@@ -27,11 +27,11 @@ class SaleOrderConfirmWizard(models.TransientModel):
 
         if order.project_id:
 
-            project_amount = order.amount_total
+            project_amount = round(order.amount_total)
 
             if self.opcion_iva == 'con':
 
-                project_untaxed = project_amount / 1.19
+                project_untaxed = round(project_amount / 1.19)
 
                 order.project_id.amount_total = project_amount
                 order.project_id.info_iva = "Proyecto con IVA"
@@ -47,7 +47,7 @@ class SaleOrderConfirmWizard(models.TransientModel):
                 if not self.valor_impuesto_aiu:
                     raise ValidationError("Debe ingresar el valor del impuesto AIU.")
                 
-                project_untaxed = project_amount/(1 + (self.valor_impuesto_aiu/100))
+                project_untaxed = round(project_amount/(1 + (self.valor_impuesto_aiu/100)))
 
                 order.project_id.amount_total = project_amount
                 order.project_id.amount_total_untaxed = project_untaxed
@@ -55,7 +55,7 @@ class SaleOrderConfirmWizard(models.TransientModel):
 
             order.project_id.amount_due = project_amount
             order.project_id.commission = self.commission
-            order.project_id.commission_money = self.commission * order.project_id.amount_total_untaxed / 100
+            order.project_id.commission_money = round(self.commission * order.project_id.amount_total_untaxed / 100)
             order.project_id.commission_due = order.project_id.commission_money
             order.project_id.supplier_debt = 0
             order.project_id.partner_id_v = self.partner_id_v
