@@ -3,6 +3,7 @@ import os
 from odoo.exceptions import UserError
 import base64
 from datetime import datetime
+import textwrap
 
 
 import logging
@@ -22,6 +23,7 @@ class MrpProduction(models.Model):
     altura = fields.Char(string="Altura")
     date_start_per = fields.Datetime(string="Último Timestamp")
     sale_line_id = fields.Many2one('sale.order.line', string='Línea de Venta', ondelete='set null' )
+    zpl_temp = fields.Binary("Etiqueta ZPL")
 
     def action_start(self):
         if not self.employee_id :
@@ -98,4 +100,65 @@ class MrpProduction(models.Model):
             'type': 'ir.actions.act_url',
             'url': f'/web/content/{attachment.id}?download=true',
             'target': 'new',
+        }
+
+    @api.model
+    def _escape_zpl(self, text):
+        """Limpia caracteres que podrían romper el ZPL."""
+        if not text:
+            return ""
+        text = text.replace("\n", " ").replace("\r", " ").replace("^", "").replace("~", "")
+        return text
+
+    def wrap_text(self, text, max_chars=40):
+        """Divide texto largo en varias líneas usando ZPL (\&)."""
+        if not text:
+            return ""
+        import textwrap
+        lines = textwrap.wrap(text, max_chars)
+        return "\\&".join(lines)
+    
+    def action_etiqueta(self):
+        self.ensure_one()
+
+        # Datos
+        production_id = str(self.id)
+        product_name = self._escape_zpl(self.product_id.display_name)
+        fabricante = self._escape_zpl(self.employee_id.name or "N/A")
+        project_name = self._escape_zpl(
+            self.sale_order_id.project_id.name if self.sale_order_id and self.sale_order_id.project_id else "N/A"
+        )
+        descripcion = self._escape_zpl(self.description or self.product_id.name)
+        descripcion = self.wrap_text(descripcion, max_chars=40)
+
+        # ZPL ajustado a etiqueta 100x50
+        zpl = f"""
+^XA
+^CI28
+^PW800
+^LL400
+^LH0,0
+
+^CF0,45
+
+^FO200,20^FB400,1,0,C,0^A0N,45,45^FDUniverso Gastronómico S.A.^FS
+
+# --- Dos saltos de línea ---
+^FO40,300^FDProyecto: {project_name}^FS
+^FO40,120^FDOrden: {production_id}^FS
+^FO40,180^FDProducto: {product_name}^FS
+^FO40,240^FDFabricante: {fabricante}^FS
+^FO40,360^FB700,3,0,L,0^FDDescripción: {descripcion}^FS
+
+^XZ
+        """
+
+        # Guardar el ZPL en el campo binario para descarga
+        self.zpl_temp = base64.b64encode(zpl.encode("utf-8"))
+
+        # Acción de descarga
+        return {
+            "type": "ir.actions.act_url",
+            "url": f"/web/content/{self.id}?model=mrp.production&field=zpl_temp&filename=etiqueta_{product_name}_{production_id}.zpl&download=true",
+            "target": "self",
         }

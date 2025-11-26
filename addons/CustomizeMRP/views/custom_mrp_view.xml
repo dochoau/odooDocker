@@ -65,7 +65,14 @@
                             string="Plano del Proyecto"
                             type="object"
                             class="btn-secondary"/>
-                </xpath>                                      
+                </xpath>
+                <!--Botón para imprimir etiqueta  -->
+                <xpath expr="//header" position="inside">
+                    <button name="action_etiqueta"
+                            string="Imprimir Etiqueta"
+                            type="object"
+                            class="btn-secondary"/>
+                </xpath>                                         
             </field>
         </record>
     </data>
