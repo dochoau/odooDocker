@@ -109,14 +109,32 @@ class MrpProduction(models.Model):
             return ""
         text = text.replace("\n", " ").replace("\r", " ").replace("^", "").replace("~", "")
         return text
+    def split_description_lines(self, text, max_chars=40):
+        """
+        Divide un texto largo en varias líneas sin cortar palabras.
+        Retorna una lista de líneas adecuadas para ZPL (^FD).
+        """
 
-    def wrap_text(self, text, max_chars=40):
-        """Divide texto largo en varias líneas usando ZPL (\&)."""
         if not text:
-            return ""
-        import textwrap
-        lines = textwrap.wrap(text, max_chars)
-        return "\\&".join(lines)
+            return []
+
+        words = text.split()
+        lines = []
+        current_line = ""
+
+        for word in words:
+            # Si agregar la siguiente palabra excede el límite, se inicia una nueva línea
+            if len(current_line) + len(word) + 1 > max_chars:
+                lines.append(current_line)
+                current_line = word
+            else:
+                current_line = word if current_line == "" else current_line + " " + word
+
+        # Agregar la última línea
+        if current_line:
+            lines.append(current_line)
+
+        return lines
     
     def action_etiqueta(self):
         self.ensure_one()
@@ -129,29 +147,42 @@ class MrpProduction(models.Model):
             self.sale_order_id.project_id.name if self.sale_order_id and self.sale_order_id.project_id else "N/A"
         )
         descripcion = self._escape_zpl(self.description or self.product_id.name)
-        descripcion = self.wrap_text(descripcion, max_chars=40)
+        descripcion_lines = self.split_description_lines(descripcion, max_chars=40)
 
         # ZPL ajustado a etiqueta 100x50
         zpl = f"""
 ^XA
-^CI28
+^CI28          ; UTF-8 / Unicode (si tu firmware lo soporta)
 ^PW800
 ^LL400
 ^LH0,0
+^CF0,40
 
-^CF0,45
+; --- Encabezado centrado usando bloque de ancho total (800) ---
+^FO0,10^FB800,1,0,C,0
+^A0N,42,42
+^FDUniverso Gastronómico S.A.^FS
 
-^FO200,20^FB400,1,0,C,0^A0N,45,45^FDUniverso Gastronómico S.A.^FS
-
-# --- Dos saltos de línea ---
-^FO40,300^FDProyecto: {project_name}^FS
-^FO40,120^FDOrden: {production_id}^FS
+; --- Dejamos espacio vertical suficiente antes del resto ---
+^FO40, 120^FDProyecto: {project_name}^FS
 ^FO40,180^FDProducto: {product_name}^FS
-^FO40,240^FDFabricante: {fabricante}^FS
-^FO40,360^FB700,3,0,L,0^FDDescripción: {descripcion}^FS
+^FO40,240^FDOrden: {production_id}^FS
+^FO40,300^FDFabricante: {fabricante}^FS
 
-^XZ
+
+; --- Descripción: cada línea en su propio ^FD (no un solo ^FD con \n) ---
+; empezamos más abajo para que no choque con el bloque superior
+^FO40,360^FDDescripción:^FS
+
+
         """
+        y = 420
+        for line in descripcion_lines:
+            zpl += f"^FO40,{y}^FD{line}^FS\n"
+            y += 60
+        
+        zpl += "^XZ"
+
 
         # Guardar el ZPL en el campo binario para descarga
         self.zpl_temp = base64.b64encode(zpl.encode("utf-8"))
@@ -159,6 +190,6 @@ class MrpProduction(models.Model):
         # Acción de descarga
         return {
             "type": "ir.actions.act_url",
-            "url": f"/web/content/{self.id}?model=mrp.production&field=zpl_temp&filename=etiqueta_{product_name}_{production_id}.zpl&download=true",
+            "url": f"/web/content/{self.id}?model=mrp.production&field=zpl_temp&filename={product_name}_{production_id}.zpl&download=true",
             "target": "self",
         }
