@@ -168,20 +168,13 @@ class MrpProduction(models.Model):
 ^FO40,180^FDProducto: {product_name}^FS
 ^FO40,240^FDOrden: {production_id}^FS
 ^FO40,300^FDFabricante: {fabricante}^FS
+^XZ
 
 
-; --- Descripción: cada línea en su propio ^FD (no un solo ^FD con \n) ---
-; empezamos más abajo para que no choque con el bloque superior
-^FO40,360^FDDescripción:^FS
+
 
 
         """
-        y = 420
-        for line in descripcion_lines:
-            zpl += f"^FO40,{y}^FD{line}^FS\n"
-            y += 60
-        
-        zpl += "^XZ"
 
 
         # Guardar el ZPL en el campo binario para descarga
@@ -190,6 +183,6 @@ class MrpProduction(models.Model):
         # Acción de descarga
         return {
             "type": "ir.actions.act_url",
-            "url": f"/web/content/{self.id}?model=mrp.production&field=zpl_temp&filename={product_name}_{production_id}.zpl&download=true",
+            "url": f"/web/content/{self.id}?model=mrp.production&field=zpl_temp&filename={product_name}_{production_id}.prn&download=true",
             "target": "self",
         }
