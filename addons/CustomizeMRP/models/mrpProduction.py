@@ -146,8 +146,7 @@ class MrpProduction(models.Model):
         project_name = self._escape_zpl(
             self.sale_order_id.project_id.name if self.sale_order_id and self.sale_order_id.project_id else "N/A"
         )
-        descripcion = self._escape_zpl(self.description or self.product_id.name)
-        descripcion_lines = self.split_description_lines(descripcion, max_chars=40)
+        dimensiones = f"Frente: {self.frente} / Fondo: {self.fondo} / Alto: {self.altura}"
 
         # ZPL ajustado a etiqueta 100x50
         zpl = f"""
@@ -161,13 +160,14 @@ class MrpProduction(models.Model):
 ; --- Encabezado centrado usando bloque de ancho total (800) ---
 ^FO0,10^FB800,1,0,C,0
 ^A0N,42,42
-^FDUniverso Gastronómico S.A.^FS
+^FDUniverso Gastronómico S.A.S.^FS
 
 ; --- Dejamos espacio vertical suficiente antes del resto ---
-^FO40, 120^FDProyecto: {project_name}^FS
-^FO40,180^FDProducto: {product_name}^FS
-^FO40,240^FDOrden: {production_id}^FS
-^FO40,300^FDFabricante: {fabricante}^FS
+^FO40,120^FDProyecto: {project_name}^FS
+^FO40,170^FDProducto: {product_name}^FS
+^FO40,220^FDOrden: {production_id}^FS
+^FO40,270^FDFabricante: {fabricante}^FS
+^FO40,320^FDDimensiones: {dimensiones}^FS
 ^XZ
 
 
