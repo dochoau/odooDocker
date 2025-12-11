@@ -167,7 +167,7 @@ class MrpProduction(models.Model):
 ^FO40,170^FDProducto: {product_name}^FS
 ^FO40,220^FDOrden: {production_id}^FS
 ^FO40,270^FDFabricante: {fabricante}^FS
-^FO40,320^FDDimensiones: {dimensiones}^FS
+^FO40,320^FDDim: {dimensiones}^FS
 ^XZ
 
 
